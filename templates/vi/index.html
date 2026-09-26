@@ -962,7 +962,14 @@ function hideScanResult() {
 }
 
 function decodeQrFromImage(imgEl, errEl) {
-    if (typeof jsQR === 'undefined') { showErr(errEl, 'Thư viện quét chưa tải, vui lòng thử lại'); return; }
+    if (typeof jsQR === 'undefined') {
+        const s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.min.js';
+        s.onload = () => decodeQrFromImage(imgEl, errEl);
+        s.onerror = () => showErr(errEl, 'Không tải được thư viện quét, kiểm tra kết nối mạng');
+        document.head.appendChild(s);
+        return;
+    }
     const canvas = document.createElement('canvas');
     canvas.width  = imgEl.naturalWidth  || imgEl.width;
     canvas.height = imgEl.naturalHeight || imgEl.height;
