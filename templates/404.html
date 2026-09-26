@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>404 - Trang không tồn tại | QR Generator</title>
+<link rel="icon" type="image/png" sizes="512x512" href="/static/favicon/favicon.png">
+<link rel="apple-touch-icon" sizes="512x512" href="/static/favicon/favicon.png">
+<link rel="shortcut icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root[data-theme="light"]{
+--bg:#f0f2fa;--bg2:#e6e9f5;--surface:#fff;--border:#dde0ee;--border2:#c8cce0;
+--text:#0f1226;--text2:#555a7a;--muted:#9298b8;
+--accent:#5b6df0;--accent-h:#6b7cf5;--accent-gl:rgba(91,109,240,.09);--accent-dis:rgba(91,109,240,.4);
+--error:#dc2626;--err-bg:rgba(220,38,38,.07);--err-border:rgba(220,38,38,.2);
+--warn-bg:rgba(217,119,6,.07);--warn-border:rgba(217,119,6,.22);--warn-text:#92400e;
+--shadow:0 2px 16px rgba(91,109,240,.09),0 1px 3px rgba(0,0,0,.05);
+--shadow-lg:0 8px 40px rgba(91,109,240,.13),0 2px 8px rgba(0,0,0,.07);
+--overlay-bg:rgba(210,215,240,.9);
+--tag-bg:#f0f2fc;--tag-text:#6070d8;
+}
+:root[data-theme="dark"]{
+--bg:#080a10;--bg2:#0d0f18;--surface:#111420;--border:#1e2235;--border2:#272d44;
+--text:#eaecf5;--text2:#8890b0;--muted:#4a5070;
+--accent:#6070e8;--accent-h:#7080f0;--accent-gl:rgba(96,112,232,.13);--accent-dis:rgba(96,112,232,.32);
+--error:#f87171;--err-bg:rgba(248,113,113,.07);--err-border:rgba(248,113,113,.22);
+--warn-bg:rgba(251,191,36,.07);--warn-border:rgba(251,191,36,.2);--warn-text:#fbbf24;
+--shadow:0 2px 16px rgba(0,0,0,.4),0 1px 3px rgba(0,0,0,.3);
+--shadow-lg:0 16px 60px rgba(0,0,0,.6);
+--overlay-bg:rgba(5,6,12,.92);
+--tag-bg:rgba(96,112,232,.1);--tag-text:#818cf8;
+}
+
+html,body{height:100%}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',system-ui,sans-serif;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:28px 20px 32px;
+  transition:background .2s,color .2s;
+}
+
+.page-header{width:100%;max-width:1080px;display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.brand-icon{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
+.brand-icon img{width:100%;height:100%;object-fit:cover}
+.brand-text h1{font-size:1.15rem;font-weight:700;letter-spacing:-.03em;line-height:1}
+.brand-text p{font-size:.72rem;color:var(--muted);margin-top:3px}
+.version-tag{font-size:.65rem;font-weight:600;color:var(--tag-text);background:var(--tag-bg);border-radius:4px;padding:2px 6px;letter-spacing:.02em;margin-left:4px;vertical-align:middle}
+
+.header-actions{display:flex;align-items:center;gap:8px}
+.btn-ghost{padding:7px 13px;background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:.79rem;font-family:inherit;font-weight:500;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:border-color .15s,color .15s,background .15s;text-decoration:none}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-gl)}
+.btn-ghost svg{width:13px;height:13px}
+
+.theme-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-gl)}
+.theme-btn svg{width:15px;height:15px}
+.icon-sun{display:none}.icon-moon{display:block}
+[data-theme="dark"] .icon-sun{display:block}[data-theme="dark"] .icon-moon{display:none}
+
+.error-container{
+  flex:1;
+  width:100%;
+  max-width:540px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:auto 0;
+}
+
+.card-404{
+  width:100%;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:20px;
+  padding:40px 32px;
+  box-shadow:var(--shadow-lg);
+  text-align:center;
+  transition:background .2s,border-color .2s;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.illustration-box{
+  width:140px;
+  height:140px;
+  background:var(--bg2);
+  border:1px dashed var(--border2);
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:24px;
+  position:relative;
+  transition:background .2s,border-color .2s;
+}
+.illustration-box svg{
+  width:84px;
+  height:84px;
+  color:var(--accent);
+}
+.error-badge{
+  position:absolute;
+  bottom:-10px;
+  background:var(--error);
+  color:#fff;
+  font-size:.7rem;
+  font-weight:700;
+  padding:3px 10px;
+  border-radius:12px;
+  letter-spacing:.04em;
+  box-shadow:0 2px 8px rgba(220,38,38,.3);
+}
+
+.error-title{
+  font-size:1.6rem;
+  font-weight:700;
+  letter-spacing:-.03em;
+  color:var(--text);
+  margin-bottom:10px;
+  line-height:1.2;
+}
+
+.error-desc{
+  font-size:.875rem;
+  color:var(--text2);
+  line-height:1.6;
+  max-width:380px;
+  margin-bottom:28px;
+}
+
+.action-buttons{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.btn-primary{
+  width:100%;
+  padding:11px;
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  font-size:.875rem;
+  font-weight:600;
+  cursor:pointer;
+  transition:background .15s,box-shadow .15s,transform .1s;
+  font-family:inherit;
+  letter-spacing:-.01em;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+.btn-primary:hover{
+  background:var(--accent-h);
+  box-shadow:0 4px 18px rgba(91,109,240,.32);
+  transform:translateY(-1px);
+}
+.btn-primary:active{transform:none}
+
+.btn-ghost-lg{
+  width:100%;
+  padding:11px;
+  background:transparent;
+  border:1px solid var(--border2);
+  border-radius:10px;
+  color:var(--text2);
+  font-size:.875rem;
+  font-weight:600;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  transition:border-color .15s,color .15s,background .15s;
+  text-decoration:none;
+  font-family:inherit;
+}
+.btn-ghost-lg:hover{
+  border-color:var(--accent);
+  color:var(--accent);
+  background:var(--accent-gl);
+}
+
+footer{
+  margin-top:24px;
+  font-size:.73rem;
+  color:var(--muted);
+  text-align:center;
+  width:100%;
+  max-width:1080px;
+  line-height:1.7;
+}
+footer a{color:var(--text2);text-decoration:none}
+footer a:hover{color:var(--accent)}
+
+@media(max-width:480px){
+  body{padding:16px 12px 24px}
+  .card-404{padding:30px 20px}
+  .error-title{font-size:1.35rem}
+  .illustration-box{width:120px;height:120px}
+  .illustration-box svg{width:70px;height:70px}
+}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+    <a class="brand" href="/">
+        <div class="brand-icon">
+            <img src="/static/icons/logo.png" alt="Logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+            <div style="display:none;width:100%;height:100%;background:var(--accent);align-items:center;justify-content:center;color:#fff;font-weight:bold;font-size:14px;">QR</div>
+        </div>
+        <div class="brand-text">
+            <h1>QR Generator <span class="version-tag">404</span></h1>
+            <p>Ảnh · Văn bản · URL · Email · Wi-Fi · Sự kiện</p>
+        </div>
+    </a>
+    <div class="header-actions">
+        <a class="btn-ghost" href="/">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            <span>Trang chủ</span>
+        </a>
+        <button class="theme-btn" id="themeToggle" title="Chuyển giao diện">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+    </div>
+</div>
+
+<div class="error-container">
+    <div class="card-404">
+        <div class="illustration-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="6" height="6" rx="1.5"/>
+                <rect x="15" y="3" width="6" height="6" rx="1.5"/>
+                <rect x="3" y="15" width="6" height="6" rx="1.5"/>
+                <rect x="5" y="5" width="2" height="2" fill="currentColor"/>
+                <rect x="17" y="5" width="2" height="2" fill="currentColor"/>
+                <rect x="5" y="17" width="2" height="2" fill="currentColor"/>
+                <path d="M14 10h2v2h-2z" fill="currentColor"/>
+                <path d="M10 14h2v2h-2z" fill="currentColor"/>
+                <path d="M17 14h3" stroke-dasharray="2 2"/>
+                <path d="M12 18v3" stroke-dasharray="2 2"/>
+                <path d="M13 3l-3 7h4l-2 6" stroke="var(--error)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="error-badge">404 ERROR</span>
+        </div>
+
+        <h2 class="error-title">Trang không tồn tại</h2>
+        <p class="error-desc">
+            Liên kết này không tồn tại, mã QR đã bị xóa hoặc đường dẫn bạn truy cập không còn khả dụng.
+        </p>
+
+        <div class="action-buttons">
+            <a href="/" class="btn-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Quay về trang chủ
+            </a>
+            <a href="/#tạo-mã/#404" class="btn-ghost-lg">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                Tạo mã QR mới
+            </a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>Mã Nguồn Mở Miễn Phí Tại Trang Chủ</p>
+</footer>
+
+<script>
+(function() {
+  const themeToggle = document.getElementById('themeToggle');
+  const html = document.documentElement;
+
+  const savedTheme = localStorage.getItem('qr_theme');
+  if (savedTheme) {
+    html.setAttribute('data-theme', savedTheme);
+  } else {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    html.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+  }
+
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('qr_theme', newTheme);
+  });
+})();
+</script>
+</body>
+</html>
