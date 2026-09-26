@@ -962,7 +962,14 @@ function hideScanResult() {
 }
 
 function decodeQrFromImage(imgEl, errEl) {
-    if (typeof jsQR === 'undefined') { showErr(errEl, 'Scanner library not loaded, please try again'); return; }
+    if (typeof jsQR === 'undefined') {
+        const s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.min.js';
+        s.onload = () => decodeQrFromImage(imgEl, errEl);
+        s.onerror = () => showErr(errEl, 'Failed to load scanner library, check your connection');
+        document.head.appendChild(s);
+        return;
+    }
     const canvas = document.createElement('canvas');
     canvas.width  = imgEl.naturalWidth  || imgEl.width;
     canvas.height = imgEl.naturalHeight || imgEl.height;
