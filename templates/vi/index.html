@@ -248,13 +248,13 @@ body{padding:16px 12px 24px}
                     <span class="new-badge">Mới</span>
                 </button>
                 <button class="tab tab-new" data-tab="event">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>Event
-                    <span class="new-badge">New</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></svg>Sự kiện
+                    <span class="new-badge">Mới</span>
                 </button>
             </div>
             <button class="btn-scan-tab" data-tab="scan">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9V5a2 2 0 012-2h4M3 15v4a2 2 0 002 2h4M15 3h4a2 2 0 012 2v4M15 21h4a2 2 0 002-2v-4"/><rect x="7" y="7" width="4" height="4" rx=".5"/><rect x="13" y="7" width="4" height="4" rx=".5"/><rect x="7" y="13" width="4" height="4" rx=".5"/><path d="M13 13h4v4"/></svg>Scan QR
-                <span class="new-badge">New</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9V5a2 2 0 012-2h4M3 15v4a2 2 0 002 2h4M15 3h4a2 2 0 012 2v4M15 21h4a2 2 0 002-2v-4"/><rect x="7" y="7" width="4" height="4" rx=".5"/><rect x="13" y="7" width="4" height="4" rx=".5"/><rect x="7" y="13" width="4" height="4" rx=".5"/><path d="M13 13h4v4"/></svg>Quét QR
+                <span class="new-badge">Mới</span>
             </button>
         </div>
 
@@ -273,7 +273,7 @@ body{padding:16px 12px 24px}
                 <input type="file" id="fileInput" accept="image/jpeg,image/png,image/gif,image/webp,image/bmp,image/tiff">
                 <div class="drop-empty" id="dropEmpty">
                     <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M14 8h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    <div class="drop-label">Drag & drop or <strong>choose image</strong></div>
+                    <div class="drop-label">Kéo thả hoặc <strong>chọn ảnh</strong></div>
                 </div>
                 <div class="drop-preview" id="dropPreview">
                     <img class="drop-preview-img" id="dropPreviewImg" src="" alt="">
@@ -366,7 +366,7 @@ body{padding:16px 12px 24px}
                     <input type="file" id="scanFileInput" accept="image/*">
                     <div class="drop-empty" id="scanDropEmpty">
                         <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M14 8h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        <div class="drop-label">Drag & drop or <strong>choose QR image</strong></div>
+                        <div class="drop-label">Kéo thả hoặc <strong>chọn ảnh QR</strong></div>
                     </div>
                     <div class="drop-preview" id="scanDropPreview">
                         <img class="drop-preview-img" id="scanDropPreviewImg" src="" alt="">
@@ -1063,8 +1063,8 @@ scanPasteBtn.addEventListener('click', () => {
     scanPasteBtn.disabled = true;
     scanPasteBtn.textContent = 'Đang quét...';
     const img = new Image();
-    img.onload = () => { decodeQrFromImage(img, scanErr); scanPasteBtn.disabled = false; scanPasteBtn.textContent = 'Scan QR'; };
-    img.onerror = () => { showErr(scanErr, 'Không đọc được ảnh'); scanPasteBtn.disabled = false; scanPasteBtn.textContent = 'Scan QR'; };
+    img.onload = () => { decodeQrFromImage(img, scanErr); scanPasteBtn.disabled = false; scanPasteBtn.textContent = 'Quét QR'; };
+    img.onerror = () => { showErr(scanErr, 'Không đọc được ảnh'); scanPasteBtn.disabled = false; scanPasteBtn.textContent = 'Quét QR'; };
     img.src = scanPasteImageData;
 });
 
