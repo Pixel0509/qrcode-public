@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>QR Generator - Free</title>
+<title>QR Code Generator - Free</title>
 <link rel="icon" type="image/png" sizes="512x512" href="/static/favicon/favicon.png">
 <link rel="apple-touch-icon" sizes="512x512" href="/static/favicon/favicon.png">
 <link rel="shortcut icon" href="/favicon.ico">
@@ -208,17 +208,17 @@ body{padding:16px 12px 24px}
         </div>
         <div class="brand-text">
             <h1>QR Generator <span class="version-tag">26&#178;.09.20+</span></h1>
-            <p>Image · Text · URL · Email · Wi-Fi · Event</p>
+            <p>Image · Text · URL · Email · Wi-Fi · Events</p>
         </div>
     </a>
     <div class="header-actions">
         <a class="btn-ghost" id="langBtn" href="#">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+            <img id="langFlag" src="" alt="" style="width:18px;height:13px;object-fit:cover;border-radius:2px;flex-shrink:0">
             <span id="langLabel">VI</span>
         </a>
         <a class="btn-ghost" href="/source" download>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-            <span>Source code</span>
+            <span>Source</span>
         </a>
         <button class="theme-btn" id="themeToggle" title="Toggle theme">
             <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
@@ -260,10 +260,10 @@ body{padding:16px 12px 24px}
 
         <div id="panel-image" class="panel active">
             <div class="field">
-                <label>ImgBB API Key <a href="https://api.imgbb.com/" target="_blank" rel="noopener noreferrer">Get key</a></label>
+                <label>ImgBB API Key <a href="https://api.imgbb.com/" target="_blank" rel="noopener noreferrer">Lấy key</a></label>
                 <div class="api-key-wrap">
-                    <input type="password" id="apiKeyInput" placeholder="Paste your API key here" autocomplete="off" maxlength="128" spellcheck="false">
-                    <button class="toggle-vis" id="toggleApiVis" type="button" aria-label="Toggle key visibility">
+                    <input type="password" id="apiKeyInput" placeholder="Paste API key here" autocomplete="off" maxlength="128" spellcheck="false">
+                    <button class="toggle-vis" id="toggleApiVis" type="button" aria-label="Show/hide API key">
                         <svg id="eyeOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                         <svg id="eyeClosed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19M1 1l22 22"/></svg>
                     </button>
@@ -279,44 +279,44 @@ body{padding:16px 12px 24px}
                     <img class="drop-preview-img" id="dropPreviewImg" src="" alt="">
                     <div class="drop-preview-info">
                         <div class="drop-preview-name" id="dropPreviewName"></div>
-                        <button class="drop-change" id="dropChange" type="button">choose new image</button>
+                        <button class="drop-change" id="dropChange" type="button">choose another</button>
                     </div>
                 </div>
             </div>
-            <button class="btn-primary" id="imgBtn" disabled>Create QR</button>
+            <button class="btn-primary" id="imgBtn" disabled>Generate QR</button>
             <div class="error-box" id="imgError"></div>
         </div>
 
         <div id="panel-text" class="panel">
             <div class="field">
                 <label>Content</label>
-                <textarea id="textInput" placeholder="Enter text to encode..." maxlength="4096"></textarea>
+                <textarea id="textInput" placeholder="Enter content to encode..." maxlength="4096"></textarea>
                 <div class="char-count" id="textCount">0 / 4096</div>
             </div>
-            <button class="btn-primary" id="textBtn">Create QR</button>
+            <button class="btn-primary" id="textBtn">Generate QR</button>
             <div class="error-box" id="textError"></div>
         </div>
 
         <div id="panel-url" class="panel">
             <div class="field"><label>URL Address</label><input type="url" id="urlInput" placeholder="https://example.com" maxlength="2048"></div>
-            <button class="btn-primary" id="urlBtn">Create QR</button>
+            <button class="btn-primary" id="urlBtn">Generate QR</button>
             <div class="error-box" id="urlError"></div>
         </div>
 
         <div id="panel-email" class="panel">
-            <div class="field"><label>Email address</label><input type="email" id="emailTo" placeholder="someone@example.com" maxlength="254"></div>
+            <div class="field"><label>Email Address</label><input type="email" id="emailTo" placeholder="someone@example.com" maxlength="254"></div>
             <div class="field"><label>Subject</label><input type="text" id="emailSubject" placeholder="Email subject" maxlength="998"></div>
             <div class="field"><label>Body</label><textarea id="emailBody" placeholder="Email body..." maxlength="2000"></textarea></div>
-            <button class="btn-primary" id="emailBtn">Create QR</button>
+            <button class="btn-primary" id="emailBtn">Generate QR</button>
             <div class="error-box" id="emailError"></div>
         </div>
 
         <div id="panel-wifi" class="panel">
-            <div class="field"><label>Network name (SSID)</label><input type="text" id="wifiSsid" placeholder="Wi-Fi name" maxlength="32"></div>
+            <div class="field"><label>Network Name (SSID)</label><input type="text" id="wifiSsid" placeholder="Wi-Fi Name" maxlength="32"></div>
             <div class="field"><label>Password</label>
                 <div class="api-key-wrap">
                     <input type="password" id="wifiPass" placeholder="Password (leave blank if none)" maxlength="63" autocomplete="off">
-                    <button class="toggle-vis" id="toggleWifiVis" type="button" aria-label="Toggle password visibility">
+                    <button class="toggle-vis" id="toggleWifiVis" type="button" aria-label="Show/hide password">
                         <svg id="wifiEyeOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                         <svg id="wifiEyeClosed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19M1 1l22 22"/></svg>
                     </button>
@@ -326,17 +326,17 @@ body{padding:16px 12px 24px}
                 <div class="field"><label>Security</label>
                     <select id="wifiEnc"><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="nopass">None</option></select>
                 </div>
-                <div class="field"><label>Hidden network</label>
+                <div class="field"><label>Hidden Network</label>
                     <select id="wifiHidden"><option value="false">No</option><option value="true">Yes</option></select>
                 </div>
             </div>
-            <button class="btn-primary" id="wifiBtn">Create QR</button>
+            <button class="btn-primary" id="wifiBtn">Generate QR</button>
             <div class="error-box" id="wifiError"></div>
         </div>
 
         <div id="panel-event" class="panel">
             <div class="field">
-                <label>Event title <span style="color:var(--error)">*</span></label>
+                <label>Event Title <span style="color:var(--error)">*</span></label>
                 <input type="text" id="evTitle" placeholder="Enter event title" maxlength="120">
             </div>
             <div class="field">
@@ -344,21 +344,21 @@ body{padding:16px 12px 24px}
                 <input type="text" id="evLocation" placeholder="Enter event location" maxlength="120">
             </div>
             <div class="row-2">
-                <div class="field"><label>Start date</label><input type="date" id="evStart"></div>
-                <div class="field"><label>End date</label><input type="date" id="evEnd"></div>
+                <div class="field"><label>Start Date</label><input type="date" id="evStart"></div>
+                <div class="field"><label>End Date</label><input type="date" id="evEnd"></div>
             </div>
             <div class="field">
                 <label>Description</label>
                 <textarea id="evDesc" placeholder="Event description..." style="min-height:62px" maxlength="1000"></textarea>
             </div>
-            <button class="btn-primary" id="eventBtn">Create QR</button>
+            <button class="btn-primary" id="eventBtn">Generate QR</button>
             <div class="error-box" id="eventError"></div>
         </div>
 
         <div id="panel-scan" class="panel">
             <div class="scan-tabs">
-                <button class="scan-tab active" data-scan="upload">Upload image</button>
-                <button class="scan-tab" data-scan="paste">Paste image</button>
+                <button class="scan-tab active" data-scan="upload">Upload Image</button>
+                <button class="scan-tab" data-scan="paste">Paste Image</button>
                 <button class="scan-tab" data-scan="url">Image URL</button>
             </div>
             <div id="scan-panel-upload" class="scan-panel active">
@@ -372,7 +372,7 @@ body{padding:16px 12px 24px}
                         <img class="drop-preview-img" id="scanDropPreviewImg" src="" alt="">
                         <div class="drop-preview-info">
                             <div class="drop-preview-name" id="scanDropPreviewName"></div>
-                            <button class="drop-change" id="scanDropChange" type="button">choose new image</button>
+                            <button class="drop-change" id="scanDropChange" type="button">choose another</button>
                         </div>
                     </div>
                 </div>
@@ -381,7 +381,7 @@ body{padding:16px 12px 24px}
             <div id="scan-panel-paste" class="scan-panel">
                 <div class="scan-paste-area" id="scanPasteArea" tabindex="0">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:22px;height:22px;color:var(--muted);margin-bottom:6px"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                    <div class="drop-label">Click here then <strong>Ctrl+V</strong> to paste image</div>
+                    <div class="drop-label">Click here then press <strong>Ctrl+V</strong> to paste image</div>
                     <div id="scanPastePreviewWrap" style="display:none;margin-top:10px;width:100%">
                         <img id="scanPastePreviewImg" src="" alt="" style="max-width:100%;max-height:140px;border-radius:8px;border:1px solid var(--border);object-fit:contain">
                     </div>
@@ -390,7 +390,7 @@ body{padding:16px 12px 24px}
             </div>
             <div id="scan-panel-url" class="scan-panel">
                 <div class="field" style="margin-bottom:12px">
-                    <label>Image URL containing QR code</label>
+                    <label>URL of image containing QR code</label>
                     <input type="url" id="scanUrlInput" placeholder="https://example.com/qr.png" maxlength="2048">
                 </div>
                 <button class="btn-primary" id="scanUrlBtn">Scan QR</button>
@@ -446,9 +446,9 @@ body{padding:16px 12px 24px}
 
 <footer>
     Personal project &mdash; just for fun &nbsp;·&nbsp; Images stored on your ImgBB account<br>
-    <a href="/source" download>Download source code</a>
+    <a href="/source" download>Download source</a>
     <div class="footer-social">
-        <span>Follow us</span>
+        <span>Follow</span>
         <a class="social-link" href="https://tiktok.com/@ttd5t9" target="_blank" rel="noopener noreferrer">
             <img src="/static/icons/tiktok.svg" alt="TikTok">
             TikTok
@@ -458,10 +458,10 @@ body{padding:16px 12px 24px}
 
 <div class="overlay" id="overlayWarn">
     <div class="modal-simple">
-        <h2>Confirm image upload</h2>
+        <h2>Confirm Image Upload</h2>
         <div class="modal-warn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-            <div>Images are stored on your ImgBB account, <strong>public link</strong> — anyone with the link can view it.<br><br>Do not upload private photos, ID cards, or sensitive documents.</div>
+            <div>Image will be saved on your ImgBB account with a <strong>public link</strong> — anyone with the link can view it.<br><br>Do not upload private photos, ID cards, or sensitive documents.</div>
         </div>
         <div class="modal-actions">
             <button class="btn-cancel" id="warnCancel">Cancel</button>
@@ -488,6 +488,8 @@ const langLabel = document.getElementById('langLabel');
 brandLink.href = LANG_URLS[CURRENT_LANG] || '/';
 langBtn.href   = LANG_URLS[OTHER_LANG] || '/';
 langLabel.textContent = OTHER_LANG.toUpperCase();
+document.getElementById('langFlag').src = '/static/icons/' + OTHER_LANG + '.webp';
+document.getElementById('langFlag').alt = OTHER_LANG.toUpperCase();
 
 const html = document.documentElement;
 const savedTheme = localStorage.getItem(LS_THEME);
@@ -679,7 +681,7 @@ dlCopy.addEventListener('click', async () => {
         const blob = await res.blob();
         await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
         const orig = dlCopy.innerHTML;
-        dlCopy.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Copied';
+        dlCopy.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Đã sao chép';
         setTimeout(() => { dlCopy.innerHTML = orig; }, 2000);
     } catch { dlCopy.textContent = 'Error'; }
 });
@@ -789,7 +791,7 @@ document.getElementById('overlayWarn').addEventListener('click', e => {
 document.getElementById('warnConfirm').addEventListener('click', async () => {
     document.getElementById('overlayWarn').classList.remove('show');
     const errEl = document.getElementById('imgError');
-    setLoading(imgBtn, true, 'Create QR');
+    setLoading(imgBtn, true, 'Generate QR');
     hideErr(errEl);
     disableDl();
     const fd = new FormData();
@@ -813,7 +815,7 @@ document.getElementById('warnConfirm').addEventListener('click', async () => {
             if (data.cooldown) startCdImg(data.cooldown * 1000);
         }
     } catch { showErr(errEl, 'Connection error, please try again'); }
-    setLoading(imgBtn, false, 'Create QR');
+    setLoading(imgBtn, false, 'Generate QR');
     updateImgBtn();
 });
 
@@ -822,7 +824,7 @@ function escWifi(s) {
 }
 
 async function genQrText(text, errEl, btn, meta) {
-    setLoading(btn, true, 'Create QR');
+    setLoading(btn, true, 'Generate QR');
     hideErr(errEl);
     disableDl();
     qrCenter.classList.remove('show');
@@ -846,7 +848,7 @@ async function genQrText(text, errEl, btn, meta) {
             if (data.cooldown) startCdTxt(data.cooldown * 1000);
         }
     } catch { showErr(errEl, 'Connection error, please try again'); }
-    setLoading(btn, false, 'Create QR');
+    setLoading(btn, false, 'Generate QR');
 }
 
 function setupTextTab(btnEl, errId, getValue, getMeta) {
@@ -960,7 +962,7 @@ function hideScanResult() {
 }
 
 function decodeQrFromImage(imgEl, errEl) {
-    if (typeof jsQR === 'undefined') { showErr(errEl, 'Scan library not loaded yet, please retry'); return; }
+    if (typeof jsQR === 'undefined') { showErr(errEl, 'Scanner library not loaded, please try again'); return; }
     const canvas = document.createElement('canvas');
     canvas.width  = imgEl.naturalWidth  || imgEl.width;
     canvas.height = imgEl.naturalHeight || imgEl.height;
@@ -1069,7 +1071,7 @@ scanPasteBtn.addEventListener('click', () => {
 document.getElementById('scanUrlBtn').addEventListener('click', () => {
     const rawUrl = document.getElementById('scanUrlInput').value.trim();
     const btn    = document.getElementById('scanUrlBtn');
-    if (!rawUrl) { showErr(scanErr, 'Please enter an image URL'); return; }
+    if (!rawUrl) { showErr(scanErr, 'Please enter image URL'); return; }
     if (!isHttpUrl(rawUrl)) { showErr(scanErr, 'URL must start with http:// or https://'); return; }
     btn.disabled = true;
     btn.textContent = 'Loading...';
