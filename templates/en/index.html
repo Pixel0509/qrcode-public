@@ -42,9 +42,9 @@
 html,body{height:100%}
 body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:28px 20px 32px;transition:background .2s,color .2s}
 .page-header{width:100%;max-width:1080px;display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
-.brand{display:flex;align-items:center;gap:12px}
-.brand-icon{width:36px;height:36px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.brand-icon svg{width:20px;height:20px;color:#fff}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;cursor:pointer}
+.brand-icon{width:36px;height:36px;background:transparent;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.brand-icon img{width:36px;height:36px;border-radius:10px;object-fit:cover;display:block}
 .brand-text h1{font-size:1.15rem;font-weight:700;letter-spacing:-.03em;line-height:1}
 .brand-text p{font-size:.72rem;color:var(--muted);margin-top:3px}
 .version-tag{font-size:.65rem;font-weight:600;color:var(--tag-text);background:var(--tag-bg);border-radius:4px;padding:2px 6px;letter-spacing:.02em;margin-left:4px;vertical-align:middle}
@@ -202,25 +202,25 @@ body{padding:16px 12px 24px}
 </head>
 <body>
 <div class="page-header">
-    <div class="brand">
-        <div class="brand-icon" style="background:none;box-shadow:none">
-            <img src="/static/icons/logo.png" alt="Logo" style="width:36px;height:36px;border-radius:10px;object-fit:cover;display:block">
+    <a class="brand" id="brandLink" href="#">
+        <div class="brand-icon">
+            <img src="/static/icons/logo.png" alt="Logo">
         </div>
         <div class="brand-text">
-            <h1>QR Generator <span class="version-tag">26.09.23.10</span></h1>
+            <h1>QR Generator <span class="version-tag">26&#178;.09.20+</span></h1>
             <p>Image · Text · URL · Email · Wi-Fi · Event</p>
         </div>
-    </div>
+    </a>
     <div class="header-actions">
-        <a class="btn-ghost" href="/vi/qrcode">
+        <a class="btn-ghost" id="langBtn" href="#">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
-            <span>VI</span>
+            <span id="langLabel">VI</span>
         </a>
         <a class="btn-ghost" href="/source" download>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
             <span>Source code</span>
         </a>
-        <button class="theme-btn" id="themeToggle" title="Chuyển giao diện">
+        <button class="theme-btn" id="themeToggle" title="Toggle theme">
             <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
             <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
         </button>
@@ -260,17 +260,17 @@ body{padding:16px 12px 24px}
 
         <div id="panel-image" class="panel active">
             <div class="field">
-                <label>ImgBB API Key <a href="https://api.imgbb.com/" target="_blank" rel="noopener">Get key</a></label>
+                <label>ImgBB API Key <a href="https://api.imgbb.com/" target="_blank" rel="noopener noreferrer">Get key</a></label>
                 <div class="api-key-wrap">
-                    <input type="password" id="apiKeyInput" placeholder="Paste your API key here" autocomplete="off">
-                    <button class="toggle-vis" id="toggleApiVis" type="button">
+                    <input type="password" id="apiKeyInput" placeholder="Paste your API key here" autocomplete="off" maxlength="128" spellcheck="false">
+                    <button class="toggle-vis" id="toggleApiVis" type="button" aria-label="Toggle key visibility">
                         <svg id="eyeOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                         <svg id="eyeClosed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19M1 1l22 22"/></svg>
                     </button>
                 </div>
             </div>
             <div class="drop-zone" id="dropZone">
-                <input type="file" id="fileInput" accept="image/*">
+                <input type="file" id="fileInput" accept="image/jpeg,image/png,image/gif,image/webp,image/bmp,image/tiff">
                 <div class="drop-empty" id="dropEmpty">
                     <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14M14 8h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round"/></svg>
                     <div class="drop-label">Drag & drop or <strong>choose image</strong></div>
@@ -279,7 +279,7 @@ body{padding:16px 12px 24px}
                     <img class="drop-preview-img" id="dropPreviewImg" src="" alt="">
                     <div class="drop-preview-info">
                         <div class="drop-preview-name" id="dropPreviewName"></div>
-                        <button class="drop-change" id="dropChange">choose new image</button>
+                        <button class="drop-change" id="dropChange" type="button">choose new image</button>
                     </div>
                 </div>
             </div>
@@ -290,30 +290,38 @@ body{padding:16px 12px 24px}
         <div id="panel-text" class="panel">
             <div class="field">
                 <label>Content</label>
-                <textarea id="textInput" placeholder="Enter text to encode..." maxlength="250"></textarea>
-                <div class="char-count" id="textCount">0 / 250</div>
+                <textarea id="textInput" placeholder="Enter text to encode..." maxlength="4096"></textarea>
+                <div class="char-count" id="textCount">0 / 4096</div>
             </div>
             <button class="btn-primary" id="textBtn">Create QR</button>
             <div class="error-box" id="textError"></div>
         </div>
 
         <div id="panel-url" class="panel">
-            <div class="field"><label>URL Address</label><input type="text" id="urlInput" placeholder="https://example.com" maxlength="100"></div>
+            <div class="field"><label>URL Address</label><input type="url" id="urlInput" placeholder="https://example.com" maxlength="2048"></div>
             <button class="btn-primary" id="urlBtn">Create QR</button>
             <div class="error-box" id="urlError"></div>
         </div>
 
         <div id="panel-email" class="panel">
-            <div class="field"><label>Email address</label><input type="text" id="emailTo" placeholder="someone@example.com" maxlength="50"></div>
-            <div class="field"><label>Subject</label><input type="text" id="emailSubject" placeholder="Email subject" maxlength="120"></div>
-            <div class="field"><label>Body</label><textarea id="emailBody" placeholder="Email body..." maxlength="1000"></textarea></div>
+            <div class="field"><label>Email address</label><input type="email" id="emailTo" placeholder="someone@example.com" maxlength="254"></div>
+            <div class="field"><label>Subject</label><input type="text" id="emailSubject" placeholder="Email subject" maxlength="998"></div>
+            <div class="field"><label>Body</label><textarea id="emailBody" placeholder="Email body..." maxlength="2000"></textarea></div>
             <button class="btn-primary" id="emailBtn">Create QR</button>
             <div class="error-box" id="emailError"></div>
         </div>
 
         <div id="panel-wifi" class="panel">
-            <div class="field"><label>Network name (SSID)</label><input type="text" id="wifiSsid" placeholder="Wi-Fi name" maxlength="35"></div>
-            <div class="field"><label>Password</label><input type="text" id="wifiPass" placeholder="Password (leave blank if none)" maxlength="60"></div>
+            <div class="field"><label>Network name (SSID)</label><input type="text" id="wifiSsid" placeholder="Wi-Fi name" maxlength="32"></div>
+            <div class="field"><label>Password</label>
+                <div class="api-key-wrap">
+                    <input type="password" id="wifiPass" placeholder="Password (leave blank if none)" maxlength="63" autocomplete="off">
+                    <button class="toggle-vis" id="toggleWifiVis" type="button" aria-label="Toggle password visibility">
+                        <svg id="wifiEyeOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg id="wifiEyeClosed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19M1 1l22 22"/></svg>
+                    </button>
+                </div>
+            </div>
             <div class="row-2">
                 <div class="field"><label>Security</label>
                     <select id="wifiEnc"><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="nopass">None</option></select>
@@ -364,7 +372,7 @@ body{padding:16px 12px 24px}
                         <img class="drop-preview-img" id="scanDropPreviewImg" src="" alt="">
                         <div class="drop-preview-info">
                             <div class="drop-preview-name" id="scanDropPreviewName"></div>
-                            <button class="drop-change" id="scanDropChange">choose new image</button>
+                            <button class="drop-change" id="scanDropChange" type="button">choose new image</button>
                         </div>
                     </div>
                 </div>
@@ -383,7 +391,7 @@ body{padding:16px 12px 24px}
             <div id="scan-panel-url" class="scan-panel">
                 <div class="field" style="margin-bottom:12px">
                     <label>Image URL containing QR code</label>
-                    <input type="text" id="scanUrlInput" placeholder="https://example.com/qr.png" maxlength="500">
+                    <input type="url" id="scanUrlInput" placeholder="https://example.com/qr.png" maxlength="2048">
                 </div>
                 <button class="btn-primary" id="scanUrlBtn">Scan QR</button>
             </div>
@@ -427,7 +435,7 @@ body{padding:16px 12px 24px}
             <div class="prev-placeholder" id="prevPlaceholder"></div>
             <img class="full-img" id="fullImg" src="" alt="">
             <div class="qr-overlay" id="qrOverlay"><img id="qrOverlayImg" src="" alt="QR"></div>
-            <div class="imgbb-bar" id="imgbbBar"><a id="imgbbLink" href="" target="_blank" rel="noopener"></a></div>
+            <div class="imgbb-bar" id="imgbbBar"><a id="imgbbLink" href="" target="_blank" rel="noopener noreferrer"></a></div>
             <div class="qr-center" id="qrCenter">
                 <img id="qrCenterImg" src="" alt="QR">
                 <div class="qr-meta" id="qrMeta"></div>
@@ -441,7 +449,7 @@ body{padding:16px 12px 24px}
     <a href="/source" download>Download source code</a>
     <div class="footer-social">
         <span>Follow us</span>
-        <a class="social-link" href="https://tiktok.com/@ttd5t9" target="_blank" rel="noopener">
+        <a class="social-link" href="https://tiktok.com/@ttd5t9" target="_blank" rel="noopener noreferrer">
             <img src="/static/icons/tiktok.svg" alt="TikTok">
             TikTok
         </a>
@@ -463,22 +471,37 @@ body{padding:16px 12px 24px}
 </div>
 
 <script>
-const LS_THEME  = 'qr_theme';
-const LS_APIKEY = 'qr_imgbb_key';
+(function(){
+const LS_THEME    = 'qr_theme';
+const LS_APIKEY   = 'qr_imgbb_key';
 const LS_TOK_IMG  = 'qr_tok_img';
 const LS_TOK_TXT  = 'qr_tok_txt';
 
+const CURRENT_LANG = document.documentElement.lang || 'en';
+const LANG_URLS = { vi: '/vi/qrcode', en: '/en/qrcode' };
+const OTHER_LANG = CURRENT_LANG === 'vi' ? 'en' : 'vi';
+
+const brandLink = document.getElementById('brandLink');
+const langBtn   = document.getElementById('langBtn');
+const langLabel = document.getElementById('langLabel');
+
+brandLink.href = LANG_URLS[CURRENT_LANG] || '/';
+langBtn.href   = LANG_URLS[OTHER_LANG] || '/';
+langLabel.textContent = OTHER_LANG.toUpperCase();
+
 const html = document.documentElement;
-html.setAttribute('data-theme', localStorage.getItem(LS_THEME) || 'light');
+const savedTheme = localStorage.getItem(LS_THEME);
+html.setAttribute('data-theme', savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+
 document.getElementById('themeToggle').addEventListener('click', () => {
     const n = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', n);
     localStorage.setItem(LS_THEME, n);
 });
 
-let selectedFile = null;
-let currentQrB64 = null;
-let currentTab   = 'image';
+let selectedFile  = null;
+let currentQrB64  = null;
+let currentTab    = 'image';
 
 const imgBtn   = document.getElementById('imgBtn');
 const textBtn  = document.getElementById('textBtn');
@@ -512,27 +535,37 @@ const qrMeta        = document.getElementById('qrMeta');
 const prevPlaceholder = document.getElementById('prevPlaceholder');
 
 const apiKeyInput = document.getElementById('apiKeyInput');
-const saved = localStorage.getItem(LS_APIKEY);
-if (saved) apiKeyInput.value = saved;
+try {
+    const saved = localStorage.getItem(LS_APIKEY);
+    if (saved) apiKeyInput.value = saved;
+} catch(_) {}
 apiKeyInput.addEventListener('input', () => {
-    localStorage.setItem(LS_APIKEY, apiKeyInput.value.trim());
+    try { localStorage.setItem(LS_APIKEY, apiKeyInput.value.trim()); } catch(_) {}
     updateImgBtn();
 });
 
-const toggleApiVis = document.getElementById('toggleApiVis');
-toggleApiVis.addEventListener('click', () => {
+document.getElementById('toggleApiVis').addEventListener('click', () => {
     const h = apiKeyInput.type === 'password';
     apiKeyInput.type = h ? 'text' : 'password';
     document.getElementById('eyeOpen').style.display  = h ? 'none' : '';
     document.getElementById('eyeClosed').style.display = h ? '' : 'none';
 });
 
-const textInput  = document.getElementById('textInput');
-const textCount  = document.getElementById('textCount');
+document.getElementById('toggleWifiVis').addEventListener('click', () => {
+    const wp = document.getElementById('wifiPass');
+    const h = wp.type === 'password';
+    wp.type = h ? 'text' : 'password';
+    document.getElementById('wifiEyeOpen').style.display  = h ? 'none' : '';
+    document.getElementById('wifiEyeClosed').style.display = h ? '' : 'none';
+});
+
+const textInput = document.getElementById('textInput');
+const textCount = document.getElementById('textCount');
+const TEXT_MAX  = 4096;
 textInput.addEventListener('input', () => {
     const n = textInput.value.length;
-    textCount.textContent = n + ' / 250';
-    textCount.classList.toggle('warn', n > 200);
+    textCount.textContent = n + ' / ' + TEXT_MAX;
+    textCount.classList.toggle('warn', n > TEXT_MAX * 0.85);
 });
 
 let timerImg = null;
@@ -555,7 +588,7 @@ function startCdImg(remMs) {
             return;
         }
         cdImgFill.style.width = ((total - rem) / total * 100) + '%';
-        cdImgLabel.textContent = 'Image: wait ' + Math.ceil(rem/1000) + 's';
+        cdImgLabel.textContent = 'Image: wait ' + Math.ceil(rem / 1000) + 's';
     }, 500);
 }
 
@@ -576,7 +609,7 @@ function startCdTxt(remMs) {
             return;
         }
         cdTxtFill.style.width = ((total - rem) / total * 100) + '%';
-        cdTxtLabel.textContent = 'Wait ' + Math.ceil(rem/1000) + 's';
+        cdTxtLabel.textContent = 'Wait ' + Math.ceil(rem / 1000) + 's';
     }, 500);
 }
 
@@ -603,16 +636,16 @@ async function pngToJpg(b64) {
             c.width = img.width; c.height = img.height;
             const ctx = c.getContext('2d');
             ctx.fillStyle = '#fff';
-            ctx.fillRect(0,0,c.width,c.height);
-            ctx.drawImage(img,0,0);
-            r(c.toDataURL('image/jpeg',.95));
+            ctx.fillRect(0, 0, c.width, c.height);
+            ctx.drawImage(img, 0, 0);
+            r(c.toDataURL('image/jpeg', .95));
         };
         img.src = 'data:image/png;base64,' + b64;
     });
 }
 function pngToSvg(b64, w, h) {
     return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(
-        `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><image href="data:image/png;base64,${b64}" width="${w}" height="${h}"/></svg>`
+        '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '"><image href="data:image/png;base64,' + b64 + '" width="' + w + '" height="' + h + '"/></svg>'
     );
 }
 
@@ -620,13 +653,15 @@ dlPng.addEventListener('click', () => {
     if (!currentQrB64) return;
     const a = document.createElement('a');
     a.href = 'data:image/png;base64,' + currentQrB64;
-    a.download = 'qrcode.png'; a.click();
+    a.download = 'qrcode.png';
+    a.click();
 });
 dlJpg.addEventListener('click', async () => {
     if (!currentQrB64) return;
     const a = document.createElement('a');
     a.href = await pngToJpg(currentQrB64);
-    a.download = 'qrcode.jpg'; a.click();
+    a.download = 'qrcode.jpg';
+    a.click();
 });
 dlSvg.addEventListener('click', async () => {
     if (!currentQrB64) return;
@@ -634,12 +669,13 @@ dlSvg.addEventListener('click', async () => {
     await new Promise(r => { img.onload = r; img.src = 'data:image/png;base64,' + currentQrB64; });
     const a = document.createElement('a');
     a.href = pngToSvg(currentQrB64, img.naturalWidth, img.naturalHeight);
-    a.download = 'qrcode.svg'; a.click();
+    a.download = 'qrcode.svg';
+    a.click();
 });
 dlCopy.addEventListener('click', async () => {
     if (!currentQrB64) return;
     try {
-        const res = await fetch('data:image/png;base64,' + currentQrB64);
+        const res  = await fetch('data:image/png;base64,' + currentQrB64);
         const blob = await res.blob();
         await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
         const orig = dlCopy.innerHTML;
@@ -658,7 +694,8 @@ function switchTab(target) {
         document.querySelectorAll('.tab[data-tab="' + target + '"]').forEach(t => t.classList.add('active'));
     }
     currentTab = target;
-    document.getElementById('panel-' + currentTab).classList.add('active');
+    const panel = document.getElementById('panel-' + currentTab);
+    if (panel) panel.classList.add('active');
     syncPreview();
 }
 document.querySelectorAll('.tab').forEach(tab => {
@@ -689,17 +726,22 @@ function setLoading(btn, yes, orig) {
     btn.innerHTML = yes ? '<span class="spinner"></span>Processing...' : orig;
 }
 
-const fileInput      = document.getElementById('fileInput');
-const dropZone       = document.getElementById('dropZone');
-const dropEmpty      = document.getElementById('dropEmpty');
-const dropPreview    = document.getElementById('dropPreview');
-const dropPreviewImg = document.getElementById('dropPreviewImg');
+function getTok(key) { try { return localStorage.getItem(key) || ''; } catch(_) { return ''; } }
+function setTok(key, val) { try { localStorage.setItem(key, val); } catch(_) {} }
+
+const fileInput       = document.getElementById('fileInput');
+const dropZone        = document.getElementById('dropZone');
+const dropEmpty       = document.getElementById('dropEmpty');
+const dropPreview     = document.getElementById('dropPreview');
+const dropPreviewImg  = document.getElementById('dropPreviewImg');
 const dropPreviewName = document.getElementById('dropPreviewName');
-const dropChange     = document.getElementById('dropChange');
+const dropChange      = document.getElementById('dropChange');
+
+const ALLOWED_IMG_TYPES = ['image/jpeg','image/png','image/gif','image/webp','image/bmp','image/tiff'];
 
 function setFile(file) {
-    if (!file || !file.type.startsWith('image/')) {
-        showErr(document.getElementById('imgError'), 'Please select a valid image file');
+    if (!file || !ALLOWED_IMG_TYPES.includes(file.type)) {
+        showErr(document.getElementById('imgError'), 'Please select a valid image file (JPEG, PNG, GIF, WebP, BMP, TIFF)');
         return;
     }
     if (file.size > 3 * 1024 * 1024) {
@@ -753,15 +795,16 @@ document.getElementById('warnConfirm').addEventListener('click', async () => {
     const fd = new FormData();
     fd.append('image', selectedFile);
     fd.append('api_key', apiKeyInput.value.trim());
-    fd.append('cd_token', localStorage.getItem(LS_TOK_IMG) || '');
+    fd.append('cd_token', getTok(LS_TOK_IMG));
     try {
         const res  = await fetch('/upload', { method: 'POST', body: fd });
         const data = await res.json();
         if (data.success) {
-            if (data.cd_token) localStorage.setItem(LS_TOK_IMG, data.cd_token);
+            if (data.cd_token) setTok(LS_TOK_IMG, data.cd_token);
             qrOverlayImg.src = 'data:image/png;base64,' + data.qr_code;
             qrOverlay.classList.add('show', 'anim-pop');
-            imgbbLink.href = imgbbLink.textContent = data.image_url;
+            imgbbLink.href = data.image_url;
+            imgbbLink.textContent = data.image_url;
             imgbbBar.classList.add('show');
             enableDl(data.qr_code);
             startCdImg((data.cd_rem || 120) * 1000);
@@ -774,6 +817,10 @@ document.getElementById('warnConfirm').addEventListener('click', async () => {
     updateImgBtn();
 });
 
+function escWifi(s) {
+    return s.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/"/g, '\\"').replace(/:/g, '\\:');
+}
+
 async function genQrText(text, errEl, btn, meta) {
     setLoading(btn, true, 'Create QR');
     hideErr(errEl);
@@ -783,11 +830,11 @@ async function genQrText(text, errEl, btn, meta) {
         const res  = await fetch('/qrtext', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({ text, cd_token: localStorage.getItem(LS_TOK_TXT) || '' })
+            body: JSON.stringify({ text, cd_token: getTok(LS_TOK_TXT) })
         });
         const data = await res.json();
         if (data.success) {
-            if (data.cd_token) localStorage.setItem(LS_TOK_TXT, data.cd_token);
+            if (data.cd_token) setTok(LS_TOK_TXT, data.cd_token);
             qrCenterImg.src = 'data:image/png;base64,' + data.qr_code;
             qrMeta.textContent = meta || '';
             qrCenter.classList.add('show', 'anim-pop');
@@ -812,19 +859,31 @@ function setupTextTab(btnEl, errId, getValue, getMeta) {
 }
 
 setupTextTab(textBtn, 'textError',
-    () => document.getElementById('textInput').value.trim(),
     () => {
-        const t = document.getElementById('textInput').value.trim();
-        return t.length > 40 ? t.slice(0,40) + '…' : t;
+        const v = textInput.value.trim();
+        if (v.length > TEXT_MAX) { showErr(document.getElementById('textError'), 'Content too long (max ' + TEXT_MAX + ' characters)'); return ''; }
+        return v;
+    },
+    () => {
+        const t = textInput.value.trim();
+        return t.length > 40 ? t.slice(0, 40) + '\u2026' : t;
     }
 );
+
 setupTextTab(urlBtn, 'urlError',
-    () => document.getElementById('urlInput').value.trim(),
+    () => {
+        const v = document.getElementById('urlInput').value.trim();
+        if (!v) return '';
+        if (!/^https?:\/\//i.test(v)) { showErr(document.getElementById('urlError'), 'URL must start with http:// or https://'); return ''; }
+        return v;
+    },
     () => document.getElementById('urlInput').value.trim()
 );
+
 setupTextTab(emailBtn, 'emailError', () => {
     const to = document.getElementById('emailTo').value.trim();
     if (!to) return '';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) { showErr(document.getElementById('emailError'), 'Invalid email address'); return ''; }
     const sub  = encodeURIComponent(document.getElementById('emailSubject').value.trim());
     const body = encodeURIComponent(document.getElementById('emailBody').value.trim());
     let uri = 'mailto:' + to;
@@ -836,11 +895,12 @@ setupTextTab(emailBtn, 'emailError', () => {
 }, () => document.getElementById('emailTo').value.trim());
 
 setupTextTab(wifiBtn, 'wifiError', () => {
-    const ssid = document.getElementById('wifiSsid').value.trim();
+    const ssid = document.getElementById('wifiSsid').value;
     if (!ssid) return '';
-    return 'WIFI:T:' + document.getElementById('wifiEnc').value +
-        ';S:' + ssid + ';P:' + document.getElementById('wifiPass').value +
-        ';H:' + document.getElementById('wifiHidden').value + ';;';
+    const enc    = document.getElementById('wifiEnc').value;
+    const pass   = document.getElementById('wifiPass').value;
+    const hidden = document.getElementById('wifiHidden').value;
+    return 'WIFI:T:' + enc + ';S:' + escWifi(ssid) + ';P:' + escWifi(pass) + ';H:' + hidden + ';;';
 }, () => document.getElementById('wifiSsid').value.trim());
 
 setupTextTab(eventBtn, 'eventError', () => {
@@ -861,29 +921,35 @@ setupTextTab(eventBtn, 'eventError', () => {
     return lines.join('\r\n');
 }, () => document.getElementById('evTitle').value.trim());
 
-const overlayWarn = document.getElementById('overlayWarn');
-document.getElementById('warnCancel').onclick = () => overlayWarn.classList.remove('show');
-
-
 document.querySelectorAll('.scan-tab').forEach(st => {
     st.addEventListener('click', () => {
         document.querySelectorAll('.scan-tab').forEach(x => x.classList.remove('active'));
         document.querySelectorAll('.scan-panel').forEach(x => x.classList.remove('active'));
         st.classList.add('active');
-        document.getElementById('scan-panel-' + st.dataset.scan).classList.add('active');
+        const panel = document.getElementById('scan-panel-' + st.dataset.scan);
+        if (panel) panel.classList.add('active');
         hideScanResult();
         hideErr(document.getElementById('scanError'));
     });
 });
 
-function isUrl(str) {
-    try { new URL(str); return str.startsWith('http://') || str.startsWith('https://'); } catch { return false; }
+function isHttpUrl(str) {
+    try {
+        const u = new URL(str);
+        return u.protocol === 'http:' || u.protocol === 'https:';
+    } catch { return false; }
 }
+
+function escHtml(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
 function showScanResult(text) {
-    const el = document.getElementById('scanResultText');
+    const el   = document.getElementById('scanResultText');
     const wrap = document.getElementById('scanResult');
-    if (isUrl(text)) {
-        el.innerHTML = '<a href="' + encodeURI(text).replace(/"/g,'%22') + '" target="_blank" rel="noopener">' + escHtml(text) + '</a>';
+    if (isHttpUrl(text)) {
+        const safeHref = text.replace(/"/g, '%22');
+        el.innerHTML = '<a href="' + safeHref + '" target="_blank" rel="noopener noreferrer">' + escHtml(text) + '</a>';
     } else {
         el.textContent = text;
     }
@@ -891,9 +957,6 @@ function showScanResult(text) {
 }
 function hideScanResult() {
     document.getElementById('scanResult').style.display = 'none';
-}
-function escHtml(s) {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 function decodeQrFromImage(imgEl, errEl) {
@@ -929,17 +992,16 @@ function decodeQrFromFile(file, errEl, btn) {
     reader.readAsDataURL(file);
 }
 
-
 let scanFile = null;
-const scanFileInput   = document.getElementById('scanFileInput');
-const scanDropZone    = document.getElementById('scanDropZone');
-const scanDropEmpty   = document.getElementById('scanDropEmpty');
-const scanDropPreview = document.getElementById('scanDropPreview');
+const scanFileInput       = document.getElementById('scanFileInput');
+const scanDropZone        = document.getElementById('scanDropZone');
+const scanDropEmpty       = document.getElementById('scanDropEmpty');
+const scanDropPreview     = document.getElementById('scanDropPreview');
 const scanDropPreviewImg  = document.getElementById('scanDropPreviewImg');
 const scanDropPreviewName = document.getElementById('scanDropPreviewName');
-const scanDropChange  = document.getElementById('scanDropChange');
-const scanUploadBtn   = document.getElementById('scanUploadBtn');
-const scanErr         = document.getElementById('scanError');
+const scanDropChange      = document.getElementById('scanDropChange');
+const scanUploadBtn       = document.getElementById('scanUploadBtn');
+const scanErr             = document.getElementById('scanError');
 
 function setScanFile(file) {
     if (!file || !file.type.startsWith('image/')) { showErr(scanErr, 'Please select a valid image file'); return; }
@@ -968,9 +1030,8 @@ scanUploadBtn.addEventListener('click', () => {
     decodeQrFromFile(scanFile, scanErr, scanUploadBtn);
 });
 
-
 let scanPasteImageData = null;
-const scanPasteArea       = document.getElementById('scanPasteArea');
+const scanPasteArea        = document.getElementById('scanPasteArea');
 const scanPastePreviewWrap = document.getElementById('scanPastePreviewWrap');
 const scanPastePreviewImg  = document.getElementById('scanPastePreviewImg');
 const scanPasteBtn         = document.getElementById('scanPasteBtn');
@@ -1005,11 +1066,11 @@ scanPasteBtn.addEventListener('click', () => {
     img.src = scanPasteImageData;
 });
 
-
 document.getElementById('scanUrlBtn').addEventListener('click', () => {
-    const url = document.getElementById('scanUrlInput').value.trim();
-    const btn = document.getElementById('scanUrlBtn');
-    if (!url) { showErr(scanErr, 'Please enter an image URL'); return; }
+    const rawUrl = document.getElementById('scanUrlInput').value.trim();
+    const btn    = document.getElementById('scanUrlBtn');
+    if (!rawUrl) { showErr(scanErr, 'Please enter an image URL'); return; }
+    if (!isHttpUrl(rawUrl)) { showErr(scanErr, 'URL must start with http:// or https://'); return; }
     btn.disabled = true;
     btn.textContent = 'Loading...';
     hideErr(scanErr);
@@ -1018,8 +1079,9 @@ document.getElementById('scanUrlBtn').addEventListener('click', () => {
     img.crossOrigin = 'anonymous';
     img.onload = () => { decodeQrFromImage(img, scanErr); btn.disabled = false; btn.textContent = 'Scan QR'; };
     img.onerror = () => { showErr(scanErr, 'Cannot load image (CORS or invalid URL)'); btn.disabled = false; btn.textContent = 'Scan QR'; };
-    img.src = url;
+    img.src = rawUrl;
 });
+})();
 </script>
 </body>
 </html>
