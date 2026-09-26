@@ -1,8 +1,7 @@
 import base64
-import hashlib
-import hmac
 import io
 import os
+import threading
 import time
 import zipfile
 
@@ -13,37 +12,23 @@ import requests
 app = Flask(__name__)
 
 IMGBB_API_KEY = os.environ.get("IMGBB_API_KEY", "")
-_SECRET = os.environ.get("QR_SECRET", "qr-secret-change-me-in-prod")
-CD_IMG_S = 120
-CD_TEXT_S = 30
+
+_LIMITS = {"img": 120, "text": 30}
+_rate_store: dict[str, dict[str, float]] = {"img": {}, "text": {}}
+_rate_lock = threading.Lock()
 
 
-def _sign(payload: str) -> str:
-    return hmac.new(_SECRET.encode(), payload.encode(), hashlib.sha256).hexdigest()
-
-
-def make_token(kind: str) -> str:
-    ts = int(time.time())
-    sig = _sign(f"{kind}:{ts}")
-    return f"{kind}:{ts}:{sig}"
-
-
-def verify_token(token: str | None, kind: str) -> tuple[bool, int]:
-    if not token:
+def _check_rate(ip: str, kind: str) -> tuple[bool, int]:
+    limit = _LIMITS[kind]
+    now = time.time()
+    with _rate_lock:
+        last = _rate_store[kind].get(ip, 0.0)
+        elapsed = now - last
+        if elapsed < limit:
+            rem = int(limit - elapsed) + 1
+            return True, rem
+        _rate_store[kind][ip] = now
         return False, 0
-    try:
-        k, ts_str, sig = token.split(":", 2)
-    except ValueError:
-        return False, 0
-    if k != kind:
-        return False, 0
-    ts = int(ts_str)
-    if not hmac.compare_digest(sig, _sign(f"{k}:{ts}")):
-        return False, 0
-    elapsed = int(time.time()) - ts
-    limit = CD_IMG_S if kind == "img" else CD_TEXT_S
-    rem = limit - elapsed
-    return rem > 0, max(rem, 0)
 
 
 @app.route("/favicon.ico")
@@ -90,14 +75,14 @@ def scan():
 
 @app.route("/upload", methods=["POST"])
 def upload():
-    token = request.form.get("cd_token", "")
-    cooling, rem = verify_token(token, "img")
-    if cooling:
+    ip = request.remote_addr or "unknown"
+    blocked, rem = _check_rate(ip, "img")
+    if blocked:
         return jsonify({
             "success": False,
             "error": f"Vui lòng chờ {rem} giây",
             "cooldown": rem
-        })
+        }), 429
 
     file = request.files.get("image")
     if not file or file.filename == "":
@@ -142,14 +127,11 @@ def upload():
             img.save(buf, format="PNG")
 
             qr_b64 = base64.b64encode(buf.getvalue()).decode("utf-8")
-            new_token = make_token("img")
 
             return jsonify({
                 "success": True,
                 "qr_code": qr_b64,
                 "image_url": image_url,
-                "cd_token": new_token,
-                "cd_rem": CD_IMG_S
             })
 
         msg = result.get("error", {}).get(
@@ -177,17 +159,16 @@ def upload():
 
 @app.route("/qrtext", methods=["POST"])
 def qrtext():
-    data = request.get_json(force=True)
-
-    token = data.get("cd_token", "")
-    cooling, rem = verify_token(token, "text")
-
-    if cooling:
+    ip = request.remote_addr or "unknown"
+    blocked, rem = _check_rate(ip, "text")
+    if blocked:
         return jsonify({
             "success": False,
             "error": f"Vui lòng chờ {rem} giây",
             "cooldown": rem
-        })
+        }), 429
+
+    data = request.get_json(force=True)
 
     text = (data.get("text") or "").strip()
 
@@ -209,13 +190,10 @@ def qrtext():
         img.save(buf, format="PNG")
 
         qr_b64 = base64.b64encode(buf.getvalue()).decode("utf-8")
-        new_token = make_token("text")
 
         return jsonify({
             "success": True,
             "qr_code": qr_b64,
-            "cd_token": new_token,
-            "cd_rem": CD_TEXT_S
         })
 
     except Exception as e:
