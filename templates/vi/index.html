@@ -213,7 +213,7 @@ body{padding:16px 12px 24px}
     </a>
     <div class="header-actions">
         <a class="btn-ghost" id="langBtn" href="#">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>
+            <img id="langFlag" src="" alt="" style="width:18px;height:13px;object-fit:cover;border-radius:2px;flex-shrink:0">
             <span id="langLabel">VI</span>
         </a>
         <a class="btn-ghost" href="/source" download>
@@ -488,6 +488,8 @@ const langLabel = document.getElementById('langLabel');
 brandLink.href = LANG_URLS[CURRENT_LANG] || '/';
 langBtn.href   = LANG_URLS[OTHER_LANG] || '/';
 langLabel.textContent = OTHER_LANG.toUpperCase();
+document.getElementById('langFlag').src = '/static/icons/' + OTHER_LANG + '.webp';
+document.getElementById('langFlag').alt = OTHER_LANG.toUpperCase();
 
 const html = document.documentElement;
 const savedTheme = localStorage.getItem(LS_THEME);
