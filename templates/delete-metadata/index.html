@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Xóa Metadata Ảnh - Miễn Phí</title>
+<title>Công Cụ Ảnh - Miễn Phí</title>
 <link rel="icon" type="image/png" sizes="512x512" href="/static/favicon/favicon.png">
 <link rel="apple-touch-icon" sizes="512x512" href="/static/favicon/favicon.png">
 <link rel="shortcut icon" href="/favicon.ico">
@@ -47,27 +47,35 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-s
 .theme-btn svg{width:15px;height:15px}
 .icon-sun{display:none}.icon-moon{display:block}
 [data-theme="dark"] .icon-sun{display:block}[data-theme="dark"] .icon-moon{display:none}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;box-shadow:var(--shadow-lg);width:100%;max-width:720px;transition:background .2s,border-color .2s}
-.card-title{font-size:1rem;font-weight:700;letter-spacing:-.02em;margin-bottom:4px}
-.card-desc{font-size:.8rem;color:var(--text2);margin-bottom:24px;line-height:1.5}
-.drop-zone{border:2px dashed var(--border2);border-radius:12px;padding:36px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:border-color .15s,background .15s;background:var(--bg);position:relative}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-lg);width:100%;max-width:720px;transition:background .2s,border-color .2s;overflow:hidden}
+.tabs-row{display:flex;border-bottom:1px solid var(--border);background:var(--bg2)}
+.tab{flex:1;padding:12px 8px;background:transparent;border:none;font-family:inherit;font-size:.8rem;font-weight:500;color:var(--text2);cursor:pointer;transition:color .15s,background .15s;display:flex;align-items:center;justify-content:center;gap:6px}
+.tab:hover{color:var(--text);background:var(--accent-gl)}
+.tab.active{color:var(--accent);background:var(--surface);border-bottom:2px solid var(--accent);margin-bottom:-1px}
+.tab svg{width:14px;height:14px;flex-shrink:0}
+.panel{display:none;padding:24px}
+.panel.active{display:block}
+.drop-zone{border:2px dashed var(--border2);border-radius:12px;padding:32px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:border-color .15s,background .15s;background:var(--bg);position:relative}
 .drop-zone.drag-over{border-color:var(--accent);background:var(--accent-gl)}
 .drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.drop-icon{color:var(--muted)}
-.drop-icon svg{width:36px;height:36px}
-.drop-text{font-size:.85rem;color:var(--text2);text-align:center;line-height:1.5}
-.drop-text strong{color:var(--accent);cursor:pointer}
+.drop-icon svg{width:34px;height:34px;color:var(--muted)}
+.drop-text{font-size:.85rem;color:var(--text2);text-align:center}
+.drop-text strong{color:var(--accent)}
 .drop-hint{font-size:.73rem;color:var(--muted)}
-.file-info{display:none;align-items:center;gap:12px;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;margin-top:12px}
+.file-info{display:none;align-items:center;gap:12px;padding:11px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;margin-top:10px}
 .file-info.show{display:flex}
-.file-thumb{width:44px;height:44px;border-radius:7px;object-fit:cover;flex-shrink:0;border:1px solid var(--border)}
+.file-thumb{width:42px;height:42px;border-radius:7px;object-fit:cover;flex-shrink:0;border:1px solid var(--border)}
 .file-details{flex:1;min-width:0}
 .file-name{font-size:.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .file-size{font-size:.73rem;color:var(--muted);margin-top:2px}
-.file-clear{background:none;border:none;cursor:pointer;color:var(--muted);padding:4px;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:color .15s}
+.file-clear{background:none;border:none;cursor:pointer;color:var(--muted);padding:4px;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:color .15s;flex-shrink:0}
 .file-clear:hover{color:var(--error)}
-.file-clear svg{width:16px;height:16px}
-.btn-primary{width:100%;padding:11px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:.875rem;font-weight:600;cursor:pointer;transition:background .15s,box-shadow .15s,transform .1s;font-family:inherit;letter-spacing:-.01em;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px}
+.file-clear svg{width:15px;height:15px}
+.field{margin-top:14px}
+.field label{display:block;font-size:.8rem;font-weight:600;color:var(--text2);margin-bottom:6px}
+.field input[type=text]{width:100%;padding:9px 12px;background:var(--bg);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;font-size:.85rem;transition:border-color .15s}
+.field input[type=text]:focus{outline:none;border-color:var(--accent)}
+.btn-primary{width:100%;padding:11px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:.875rem;font-weight:600;cursor:pointer;transition:background .15s,box-shadow .15s,transform .1s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px}
 .btn-primary:hover:not(:disabled){background:var(--accent-h);box-shadow:0 4px 18px rgba(91,109,240,.32);transform:translateY(-1px)}
 .btn-primary:active:not(:disabled){transform:none}
 .btn-primary:disabled{background:var(--accent-dis);cursor:not-allowed}
@@ -77,13 +85,14 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-s
 .error-box.show{display:block}
 .success-box{display:none;background:var(--suc-bg);border:1px solid var(--suc-border);border-radius:8px;padding:10px 13px;font-size:.82rem;color:var(--success);margin-top:10px;align-items:center;gap:8px}
 .success-box.show{display:flex}
-.success-box svg{width:16px;height:16px;flex-shrink:0}
-.info-section{margin-top:28px;padding-top:24px;border-top:1px solid var(--border)}
-.info-title{font-size:.82rem;font-weight:600;color:var(--text2);margin-bottom:12px;letter-spacing:.01em;text-transform:uppercase}
-.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
-.info-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
-.info-item-title{font-size:.73rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
-.info-item-desc{font-size:.8rem;color:var(--text2);line-height:1.4}
+.success-box svg{width:15px;height:15px;flex-shrink:0}
+.meta-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.82rem}
+.meta-table th{text-align:left;padding:7px 10px;background:var(--bg2);color:var(--text2);font-weight:600;font-size:.73rem;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border)}
+.meta-table td{padding:7px 10px;border-bottom:1px solid var(--border);word-break:break-all}
+.meta-table tr:last-child td{border-bottom:none}
+.meta-table .key{color:var(--text2);font-weight:500;width:160px;min-width:120px}
+.meta-table .val{color:var(--text)}
+.meta-empty{text-align:center;color:var(--muted);padding:24px;font-size:.85rem}
 footer{margin-top:24px;font-size:.73rem;color:var(--muted);text-align:center;width:100%;max-width:720px;line-height:1.7}
 footer a{color:var(--text2);text-decoration:none}
 footer a:hover{color:var(--accent)}
@@ -91,19 +100,17 @@ footer a:hover{color:var(--accent)}
 .social-link{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1px solid var(--border2);border-radius:8px;color:var(--text2);text-decoration:none;font-size:.79rem;font-weight:500;transition:border-color .15s,color .15s,background .15s}
 .social-link:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-gl)}
 .social-link img{width:14px;height:14px}
-@media(max-width:600px){body{padding:16px 12px 24px}.card{padding:20px}}
+@media(max-width:600px){body{padding:16px 12px 24px}.panel{padding:16px}.tab{font-size:.73rem;gap:4px}}
 </style>
 </head>
 <body>
 
 <div class="page-header">
     <a class="brand" href="/">
-        <div class="brand-icon">
-            <img src="/static/icons/logo.png" alt="Logo">
-        </div>
+        <div class="brand-icon"><img src="/static/icons/logo.png" alt="Logo"></div>
         <div class="brand-text">
-            <h1>Xóa Metadata <span class="version-tag">26.27.09.25</span></h1>
-            <p>Xóa EXIF · GPS · Thông tin ẩn khỏi ảnh</p>
+            <h1>Công Cụ Ảnh <span class="version-tag">26.27.09.25</span></h1>
+            <p>Xóa metadata · Ký tên · Đọc metadata</p>
         </div>
     </a>
     <div class="header-actions">
@@ -119,60 +126,90 @@ footer a:hover{color:var(--accent)}
 </div>
 
 <div class="card">
-    <div class="card-title">Xóa metadata ảnh</div>
-    <div class="card-desc">Tải ảnh lên — server xóa toàn bộ EXIF, GPS, dữ liệu ẩn và trả về file sạch. Ảnh không được lưu lại.</div>
-
-    <div class="drop-zone" id="dropZone">
-        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp,image/tiff,image/bmp">
-        <div class="drop-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-        </div>
-        <div class="drop-text">Kéo thả hoặc <strong>chọn ảnh</strong></div>
-        <div class="drop-hint">JPEG, PNG, WebP, TIFF, BMP · Tối đa 10 MB</div>
-    </div>
-
-    <div class="file-info" id="fileInfo">
-        <img class="file-thumb" id="fileThumb" src="" alt="">
-        <div class="file-details">
-            <div class="file-name" id="fileName"></div>
-            <div class="file-size" id="fileSize"></div>
-        </div>
-        <button class="file-clear" id="fileClear" title="Xóa file">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    <div class="tabs-row">
+        <button class="tab active" data-tab="strip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+            Xóa Metadata
+        </button>
+        <button class="tab" data-tab="sign">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            Ký Tên
+        </button>
+        <button class="tab" data-tab="read">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            Đọc Metadata
         </button>
     </div>
 
-    <div class="error-box" id="errorBox"></div>
-    <div class="success-box" id="successBox">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-        <span id="successMsg"></span>
+    <div class="panel active" id="panel-strip">
+        <div class="drop-zone" id="stripDrop">
+            <input type="file" id="stripInput" accept="image/jpeg,image/png,image/webp,image/tiff,image/bmp">
+            <div class="drop-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+            <div class="drop-text">Kéo thả hoặc <strong>chọn ảnh</strong></div>
+            <div class="drop-hint">JPEG, PNG, WebP, TIFF, BMP · Tối đa 10 MB</div>
+        </div>
+        <div class="file-info" id="stripInfo">
+            <img class="file-thumb" id="stripThumb" src="" alt="">
+            <div class="file-details">
+                <div class="file-name" id="stripName"></div>
+                <div class="file-size" id="stripSize"></div>
+            </div>
+            <button class="file-clear" id="stripClear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <div class="error-box" id="stripErr"></div>
+        <div class="success-box" id="stripOk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span id="stripOkMsg"></span></div>
+        <button class="btn-primary" id="stripBtn" disabled data-loading="Đang xử lý...">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+            Xóa metadata &amp; tải về
+        </button>
     </div>
 
-    <button class="btn-primary" id="submitBtn" disabled data-loading="Đang xử lý...">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 8v4l3 3"/></svg>
-        Xóa metadata &amp; tải về
-    </button>
-
-    <div class="info-section">
-        <div class="info-title">Metadata bị xóa</div>
-        <div class="info-grid">
-            <div class="info-item">
-                <div class="info-item-title">EXIF</div>
-                <div class="info-item-desc">Thiết bị, ngày chụp, cài đặt camera</div>
-            </div>
-            <div class="info-item">
-                <div class="info-item-title">GPS</div>
-                <div class="info-item-desc">Tọa độ địa lý, địa điểm chụp</div>
-            </div>
-            <div class="info-item">
-                <div class="info-item-title">IPTC / XMP</div>
-                <div class="info-item-desc">Tác giả, bản quyền, từ khóa</div>
-            </div>
-            <div class="info-item">
-                <div class="info-item-title">ICC Profile</div>
-                <div class="info-item-desc">Thông tin màu sắc nhúng trong file</div>
-            </div>
+    <div class="panel" id="panel-sign">
+        <div class="drop-zone" id="signDrop">
+            <input type="file" id="signInput" accept="image/jpeg,image/png,image/webp,image/tiff,image/bmp">
+            <div class="drop-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+            <div class="drop-text">Kéo thả hoặc <strong>chọn ảnh</strong></div>
+            <div class="drop-hint">JPEG, PNG, WebP, TIFF, BMP · Tối đa 10 MB</div>
         </div>
+        <div class="file-info" id="signInfo">
+            <img class="file-thumb" id="signThumb" src="" alt="">
+            <div class="file-details">
+                <div class="file-name" id="signName"></div>
+                <div class="file-size" id="signSize"></div>
+            </div>
+            <button class="file-clear" id="signClear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <div class="field"><label>Tên tác giả (Artist)</label><input type="text" id="signArtist" placeholder="Nhập tên tác giả..." maxlength="200"></div>
+        <div class="field"><label>Mô tả ảnh (Description)</label><input type="text" id="signDesc" placeholder="Nhập mô tả..." maxlength="500"></div>
+        <div class="error-box" id="signErr"></div>
+        <div class="success-box" id="signOk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span id="signOkMsg"></span></div>
+        <button class="btn-primary" id="signBtn" disabled data-loading="Đang xử lý...">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+            Ghi metadata &amp; tải về
+        </button>
+    </div>
+
+    <div class="panel" id="panel-read">
+        <div class="drop-zone" id="readDrop">
+            <input type="file" id="readInput" accept="image/jpeg,image/png,image/webp,image/tiff,image/bmp">
+            <div class="drop-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+            <div class="drop-text">Kéo thả hoặc <strong>chọn ảnh</strong></div>
+            <div class="drop-hint">JPEG, PNG, WebP, TIFF, BMP · Tối đa 10 MB</div>
+        </div>
+        <div class="file-info" id="readInfo">
+            <img class="file-thumb" id="readThumb" src="" alt="">
+            <div class="file-details">
+                <div class="file-name" id="readName"></div>
+                <div class="file-size" id="readSize"></div>
+            </div>
+            <button class="file-clear" id="readClear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        </div>
+        <div class="error-box" id="readErr"></div>
+        <button class="btn-primary" id="readBtn" disabled data-loading="Đang đọc...">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            Đọc metadata
+        </button>
+        <div id="readResult"></div>
     </div>
 </div>
 
@@ -182,8 +219,7 @@ footer a:hover{color:var(--accent)}
     <div class="footer-social">
         <span>Theo dõi</span>
         <a class="social-link" href="https://tiktok.com/@ttd5t9" target="_blank" rel="noopener noreferrer">
-            <img src="/static/icons/tiktok.svg" alt="TikTok">
-            TikTok
+            <img src="/static/icons/tiktok.svg" alt="TikTok">TikTok
         </a>
     </div>
 </footer>
@@ -199,101 +235,158 @@ document.getElementById('themeToggle').addEventListener('click', () => {
     localStorage.setItem('qr_theme', t);
 });
 
-const dropZone  = document.getElementById('dropZone');
-const fileInput = document.getElementById('fileInput');
-const fileInfo  = document.getElementById('fileInfo');
-const fileThumb = document.getElementById('fileThumb');
-const fileName  = document.getElementById('fileName');
-const fileSize  = document.getElementById('fileSize');
-const fileClear = document.getElementById('fileClear');
-const submitBtn = document.getElementById('submitBtn');
-const errorBox  = document.getElementById('errorBox');
-const successBox= document.getElementById('successBox');
-const successMsg= document.getElementById('successMsg');
+document.querySelectorAll('.tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+    });
+});
 
-const MAX_BYTES = 10 * 1024 * 1024;
-const ALLOWED   = new Set(['image/jpeg','image/png','image/webp','image/tiff','image/bmp']);
-
-let currentFile = null;
+const MAX   = 10 * 1024 * 1024;
+const TYPES = new Set(['image/jpeg','image/png','image/webp','image/tiff','image/bmp']);
 
 function fmtSize(b){ return b < 1024*1024 ? (b/1024).toFixed(1)+' KB' : (b/1024/1024).toFixed(2)+' MB'; }
 
-function showErr(msg){ errorBox.textContent = msg; errorBox.classList.add('show'); successBox.classList.remove('show'); }
-function clearErr(){ errorBox.classList.remove('show'); successBox.classList.remove('show'); }
+function makeZone(dropId, inputId, infoId, thumbId, nameId, sizeId, clearId, btnId, onFile){
+    const drop  = document.getElementById(dropId);
+    const input = document.getElementById(inputId);
+    const info  = document.getElementById(infoId);
+    const thumb = document.getElementById(thumbId);
+    const fname = document.getElementById(nameId);
+    const fsize = document.getElementById(sizeId);
+    const clear = document.getElementById(clearId);
+    const btn   = document.getElementById(btnId);
+    let file = null;
 
-function setFile(file){
-    if(!ALLOWED.has(file.type)){ showErr('Định dạng không hỗ trợ (JPEG, PNG, WebP, TIFF, BMP)'); return; }
-    if(file.size > MAX_BYTES){ showErr('File vượt quá 10 MB'); return; }
-    clearErr();
-    currentFile = file;
-    fileName.textContent = file.name;
-    fileSize.textContent = fmtSize(file.size);
-    const reader = new FileReader();
-    reader.onload = e => { fileThumb.src = e.target.result; };
-    reader.readAsDataURL(file);
-    fileInfo.classList.add('show');
-    submitBtn.disabled = false;
+    function setFile(f){
+        if(!TYPES.has(f.type)){ onFile(null,'Định dạng không hỗ trợ'); return; }
+        if(f.size > MAX){ onFile(null,'File vượt quá 10 MB'); return; }
+        file = f;
+        fname.textContent = f.name;
+        fsize.textContent = fmtSize(f.size);
+        const r = new FileReader();
+        r.onload = e => { thumb.src = e.target.result; };
+        r.readAsDataURL(f);
+        info.classList.add('show');
+        btn.disabled = false;
+        onFile(f, null);
+    }
+
+    function clearFile(){
+        file = null; input.value = ''; thumb.src = '';
+        info.classList.remove('show'); btn.disabled = true;
+        onFile(null, null);
+    }
+
+    input.addEventListener('change', () => { if(input.files[0]) setFile(input.files[0]); });
+    drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('drag-over'); });
+    drop.addEventListener('dragleave', () => drop.classList.remove('drag-over'));
+    drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('drag-over'); if(e.dataTransfer.files[0]) setFile(e.dataTransfer.files[0]); });
+    clear.addEventListener('click', clearFile);
+
+    return { getFile: () => file };
 }
 
-function clearFile(){
-    currentFile = null;
-    fileInput.value = '';
-    fileThumb.src = '';
-    fileInfo.classList.remove('show');
-    submitBtn.disabled = true;
-    clearErr();
+function showErr(id, msg){ const el = document.getElementById(id); el.textContent = msg; el.classList.add('show'); }
+function hideErr(id){ document.getElementById(id).classList.remove('show'); }
+function showOk(id, msgId, msg){ document.getElementById(id).classList.add('show'); document.getElementById(msgId).textContent = msg; }
+function hideOk(id){ document.getElementById(id).classList.remove('show'); }
+
+function setLoading(btn, yes, orig){
+    btn.disabled = yes;
+    btn.innerHTML = yes ? '<span class="spinner"></span>' + (btn.dataset.loading||'...') : orig;
 }
 
-fileInput.addEventListener('change', () => { if(fileInput.files[0]) setFile(fileInput.files[0]); });
+async function doPost(url, fd){
+    const r = await fetch(url, {method:'POST', body:fd});
+    if(!r.ok){ const j = await r.json().catch(()=>({})); throw new Error(j.error||'Lỗi server'); }
+    return r;
+}
 
-dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
-dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
-dropZone.addEventListener('drop', e => {
-    e.preventDefault();
-    dropZone.classList.remove('drag-over');
-    const f = e.dataTransfer.files[0];
-    if(f) setFile(f);
+function triggerDownload(blob, filename){
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = filename; a.click();
+    URL.revokeObjectURL(url);
+}
+
+const stripZone = makeZone('stripDrop','stripInput','stripInfo','stripThumb','stripName','stripSize','stripClear','stripBtn',
+    (f,err) => { hideErr('stripErr'); hideOk('stripOk'); if(err) showErr('stripErr',err); });
+
+const stripBtn = document.getElementById('stripBtn');
+stripBtn.addEventListener('click', async () => {
+    const f = stripZone.getFile(); if(!f) return;
+    hideErr('stripErr'); hideOk('stripOk');
+    const orig = stripBtn.innerHTML;
+    setLoading(stripBtn, true, orig);
+    try {
+        const fd = new FormData(); fd.append('image', f);
+        const res = await doPost('/strip-metadata', fd);
+        const blob = await res.blob();
+        const base = f.name.replace(/\.[^.]+$/, '');
+        triggerDownload(blob, base + '_clean.' + f.name.split('.').pop());
+        showOk('stripOk','stripOkMsg','Đã xóa metadata — file đang tải về.');
+    } catch(e){ showErr('stripErr', e.message); }
+    finally{ setLoading(stripBtn, false, orig); }
 });
 
-fileClear.addEventListener('click', clearFile);
+const signZone = makeZone('signDrop','signInput','signInfo','signThumb','signName','signSize','signClear','signBtn',
+    (f,err) => { hideErr('signErr'); hideOk('signOk'); if(err) showErr('signErr',err); });
 
-submitBtn.addEventListener('click', async () => {
-    if(!currentFile) return;
-    clearErr();
-    const orig = submitBtn.innerHTML;
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="spinner"></span>' + (submitBtn.dataset.loading || '...');
-
+const signBtn = document.getElementById('signBtn');
+signBtn.addEventListener('click', async () => {
+    const f = signZone.getFile(); if(!f) return;
+    hideErr('signErr'); hideOk('signOk');
+    const artist = document.getElementById('signArtist').value.trim();
+    const desc   = document.getElementById('signDesc').value.trim();
+    if(!artist && !desc){ showErr('signErr','Nhập ít nhất tên tác giả hoặc mô tả.'); return; }
+    const orig = signBtn.innerHTML;
+    setLoading(signBtn, true, orig);
     try {
-        const fd = new FormData();
-        fd.append('image', currentFile);
-        const res = await fetch('/strip-metadata', { method: 'POST', body: fd });
+        const fd = new FormData(); fd.append('image', f);
+        fd.append('artist', artist); fd.append('desc', desc);
+        const res = await doPost('/sign-image', fd);
+        const blob = await res.blob();
+        const base = f.name.replace(/\.[^.]+$/, '');
+        triggerDownload(blob, base + '_signed.' + f.name.split('.').pop());
+        showOk('signOk','signOkMsg','Đã ghi metadata — file đang tải về.');
+    } catch(e){ showErr('signErr', e.message); }
+    finally{ setLoading(signBtn, false, orig); }
+});
 
-        if(!res.ok){
-            const j = await res.json().catch(() => ({}));
-            showErr(j.error || 'Lỗi server');
+const readZone = makeZone('readDrop','readInput','readInfo','readThumb','readName','readSize','readClear','readBtn',
+    (f,err) => { hideErr('readErr'); document.getElementById('readResult').innerHTML=''; if(err) showErr('readErr',err); });
+
+const readBtn = document.getElementById('readBtn');
+readBtn.addEventListener('click', async () => {
+    const f = readZone.getFile(); if(!f) return;
+    hideErr('readErr');
+    document.getElementById('readResult').innerHTML = '';
+    const orig = readBtn.innerHTML;
+    setLoading(readBtn, true, orig);
+    try {
+        const fd = new FormData(); fd.append('image', f);
+        const res = await doPost('/read-metadata', fd);
+        const data = await res.json();
+        if(!data.success){ showErr('readErr', data.error||'Lỗi đọc metadata'); return; }
+        const rows = data.rows;
+        if(!rows || !rows.length){
+            document.getElementById('readResult').innerHTML = '<div class="meta-empty">Không tìm thấy metadata.</div>';
             return;
         }
-
-        const blob = await res.blob();
-        const ext  = currentFile.name.includes('.') ? currentFile.name.rsplit ? '' : currentFile.name.split('.').pop() : 'jpg';
-        const base = currentFile.name.replace(/\.[^.]+$/, '');
-        const url  = URL.createObjectURL(blob);
-        const a    = document.createElement('a');
-        a.href     = url;
-        a.download = base + '_clean.' + (currentFile.name.split('.').pop() || 'jpg');
-        a.click();
-        URL.revokeObjectURL(url);
-
-        successMsg.textContent = 'Đã xóa metadata — file đang tải về.';
-        successBox.classList.add('show');
-    } catch(e){
-        showErr('Lỗi kết nối, vui lòng thử lại');
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = orig;
-    }
+        let html = '<table class="meta-table"><thead><tr><th>Trường</th><th>Giá trị</th></tr></thead><tbody>';
+        rows.forEach(([k,v]) => {
+            html += `<tr><td class="key">${esc(k)}</td><td class="val">${esc(v)}</td></tr>`;
+        });
+        html += '</tbody></table>';
+        document.getElementById('readResult').innerHTML = html;
+    } catch(e){ showErr('readErr', e.message); }
+    finally{ setLoading(readBtn, false, orig); }
 });
+
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 })();
 </script>
 </body>
