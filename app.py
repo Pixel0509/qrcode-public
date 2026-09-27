@@ -6,6 +6,7 @@ import os
 import time
 
 from flask import Flask, render_template, request, jsonify, send_from_directory, redirect
+from PIL import Image
 import qrcode
 import requests
 
@@ -203,50 +204,152 @@ def delete_metadata():
     return render_template("delete-metadata/index.html")
 
 
+_IMG_MIME = {"JPEG": "image/jpeg", "PNG": "image/png", "WEBP": "image/webp",
+             "TIFF": "image/tiff", "BMP": "image/bmp"}
+_IMG_MAX  = 10 * 1024 * 1024
+_ALLOWED_MIME = {"image/jpeg", "image/png", "image/webp", "image/tiff", "image/bmp"}
+
+
+def _read_image_file(file):
+    if not file or not file.filename:
+        return None, None, "Chưa chọn file ảnh"
+    if (file.content_type or "") not in _ALLOWED_MIME:
+        return None, None, "Định dạng không hỗ trợ"
+    data = file.read(_IMG_MAX + 1)
+    if len(data) > _IMG_MAX:
+        return None, None, "File vượt quá 10 MB"
+    from PIL import Image
+    img = Image.open(io.BytesIO(data))
+    img.load()
+    return img, data, None
+
+
+def _img_response(img, fmt):
+    buf = io.BytesIO()
+    kw = {"format": fmt}
+    if fmt == "JPEG":
+        kw["quality"] = 95
+        kw["subsampling"] = 0
+    img.save(buf, **kw)
+    buf.seek(0)
+    from flask import Response
+    return Response(buf.read(), mimetype=_IMG_MIME.get(fmt, "image/jpeg"),
+                    headers={"Content-Disposition": "attachment"})
+
+
 @app.route("/strip-metadata", methods=["POST"])
 def strip_metadata():
-    file = request.files.get("image")
-    if not file or not file.filename:
-        return jsonify({"error": "Chưa chọn file ảnh"}), 400
-
-    allowed_mime = {"image/jpeg", "image/png", "image/webp", "image/tiff", "image/bmp"}
-    if (file.content_type or "") not in allowed_mime:
-        return jsonify({"error": "Định dạng không hỗ trợ"}), 400
-
-    _MAX = 10 * 1024 * 1024
     try:
-        data = file.read(_MAX + 1)
-        if len(data) > _MAX:
-            return jsonify({"error": "File vượt quá 10 MB"}), 400
-
-        from PIL import Image
-        src = io.BytesIO(data)
-        img = Image.open(src)
-        img.load()
-
-        out_fmt = img.format or "JPEG"
-        mime_map = {"JPEG": "image/jpeg", "PNG": "image/png", "WEBP": "image/webp",
-                    "TIFF": "image/tiff", "BMP": "image/bmp"}
-
+        img, _, err = _read_image_file(request.files.get("image"))
+        if err:
+            return jsonify({"error": err}), 400
+        fmt   = img.format or "JPEG"
         clean = Image.new(img.mode, img.size)
         clean.putdata(list(img.getdata()))
-
-        buf = io.BytesIO()
-        save_kw = {"format": out_fmt}
-        if out_fmt == "JPEG":
-            save_kw["quality"] = 95
-            save_kw["subsampling"] = 0
-        clean.save(buf, **save_kw)
-        buf.seek(0)
-
-        from flask import Response
-        return Response(
-            buf.read(),
-            mimetype=mime_map.get(out_fmt, "image/jpeg"),
-            headers={"Content-Disposition": "attachment"},
-        )
+        return _img_response(clean, fmt)
     except Exception:
         return jsonify({"error": "Lỗi xử lý ảnh"}), 500
+
+
+@app.route("/sign-image", methods=["POST"])
+def sign_image():
+    try:
+        img, _, err = _read_image_file(request.files.get("image"))
+        if err:
+            return jsonify({"error": err}), 400
+        artist = (request.form.get("artist") or "").strip()[:200]
+        desc   = (request.form.get("desc")   or "").strip()[:500]
+        fmt    = img.format or "JPEG"
+        buf    = io.BytesIO()
+        if fmt == "JPEG":
+            try:
+                import piexif
+                raw = img.info.get("exif", b"")
+                try:
+                    exif_dict = piexif.load(raw)
+                except Exception:
+                    exif_dict = {"0th": {}, "Exif": {}, "GPS": {}, "1st": {}}
+                exif_dict.setdefault("0th", {})
+                if artist:
+                    exif_dict["0th"][piexif.ImageIFD.Artist] = artist.encode("utf-8")
+                if desc:
+                    exif_dict["0th"][piexif.ImageIFD.ImageDescription] = desc.encode("utf-8")
+                img.save(buf, format="JPEG", quality=95, subsampling=0,
+                         exif=piexif.dump(exif_dict))
+            except ImportError:
+                img.save(buf, format="JPEG", quality=95, subsampling=0)
+        else:
+            from PIL import PngImagePlugin
+            pnginfo = PngImagePlugin.PngInfo()
+            if artist: pnginfo.add_text("Artist", artist)
+            if desc:   pnginfo.add_text("Description", desc)
+            img.save(buf, format=fmt, pnginfo=pnginfo if fmt == "PNG" else None)
+        buf.seek(0)
+        from flask import Response
+        return Response(buf.read(), mimetype=_IMG_MIME.get(fmt, "image/jpeg"),
+                        headers={"Content-Disposition": "attachment"})
+    except Exception:
+        return jsonify({"error": "Lỗi ghi metadata"}), 500
+
+
+@app.route("/read-metadata", methods=["POST"])
+def read_metadata():
+    try:
+        img, _, err = _read_image_file(request.files.get("image"))
+        if err:
+            return jsonify({"success": False, "error": err}), 400
+        rows = []
+        fmt  = img.format or "?"
+        if fmt == "JPEG":
+            raw = img.info.get("exif", b"")
+            if raw:
+                try:
+                    import piexif
+                    exif_dict = piexif.load(raw)
+                    tag_map = {
+                        piexif.ImageIFD.Artist:           "Artist",
+                        piexif.ImageIFD.ImageDescription: "ImageDescription",
+                        piexif.ImageIFD.Make:             "Make",
+                        piexif.ImageIFD.Model:            "Model",
+                        piexif.ImageIFD.Software:         "Software",
+                        piexif.ImageIFD.DateTime:         "DateTime",
+                        piexif.ImageIFD.Copyright:        "Copyright",
+                    }
+                    gps_map = {
+                        piexif.GPSIFD.GPSLatitude:     "GPS Latitude",
+                        piexif.GPSIFD.GPSLongitude:    "GPS Longitude",
+                        piexif.GPSIFD.GPSAltitude:     "GPS Altitude",
+                        piexif.GPSIFD.GPSDateStamp:    "GPS Date",
+                    }
+                    for ifd in ("0th", "1st", "Exif"):
+                        for tag, label in tag_map.items():
+                            val = exif_dict.get(ifd, {}).get(tag)
+                            if val is not None:
+                                if isinstance(val, bytes):
+                                    val = val.decode("utf-8", errors="replace").strip("\x00")
+                                rows.append([label, str(val)])
+                    for tag, label in gps_map.items():
+                        val = exif_dict.get("GPS", {}).get(tag)
+                        if val is not None:
+                            rows.append([label, str(val)])
+                except ImportError:
+                    rows.append(["EXIF raw bytes", str(len(raw))])
+                except Exception:
+                    rows.append(["EXIF raw bytes", str(len(raw))])
+            else:
+                rows.append(["EXIF", "(Không có)"])
+        else:
+            info = img.info or {}
+            for k, v in info.items():
+                rows.append([str(k), str(v)[:300]])
+            if not info:
+                rows.append(["Metadata", "(Không có)"])
+        rows.append(["Format", fmt])
+        rows.append(["Mode",   img.mode])
+        rows.append(["Kích thước", f"{img.width} x {img.height} px"])
+        return jsonify({"success": True, "rows": rows})
+    except Exception:
+        return jsonify({"success": False, "error": "Lỗi đọc metadata"}), 500
 
 
 @app.errorhandler(404)
