@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Xóa Metadata Ảnh - Miễn Phí</title>
+<link rel="icon" type="image/png" sizes="512x512" href="/static/favicon/favicon.png">
+<link rel="apple-touch-icon" sizes="512x512" href="/static/favicon/favicon.png">
+<link rel="shortcut icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root[data-theme="light"]{
+--bg:#f0f2fa;--bg2:#e6e9f5;--surface:#fff;--border:#dde0ee;--border2:#c8cce0;
+--text:#0f1226;--text2:#555a7a;--muted:#9298b8;
+--accent:#5b6df0;--accent-h:#6b7cf5;--accent-gl:rgba(91,109,240,.09);--accent-dis:rgba(91,109,240,.4);
+--error:#dc2626;--err-bg:rgba(220,38,38,.07);--err-border:rgba(220,38,38,.2);
+--success:#16a34a;--suc-bg:rgba(22,163,74,.07);--suc-border:rgba(22,163,74,.2);
+--shadow:0 2px 16px rgba(91,109,240,.09),0 1px 3px rgba(0,0,0,.05);
+--shadow-lg:0 8px 40px rgba(91,109,240,.13),0 2px 8px rgba(0,0,0,.07);
+--tag-bg:#f0f2fc;--tag-text:#6070d8;
+}
+:root[data-theme="dark"]{
+--bg:#080a10;--bg2:#0d0f18;--surface:#111420;--border:#1e2235;--border2:#272d44;
+--text:#eaecf5;--text2:#8890b0;--muted:#4a5070;
+--accent:#6070e8;--accent-h:#7080f0;--accent-gl:rgba(96,112,232,.13);--accent-dis:rgba(96,112,232,.32);
+--error:#f87171;--err-bg:rgba(248,113,113,.07);--err-border:rgba(248,113,113,.22);
+--success:#4ade80;--suc-bg:rgba(74,222,128,.07);--suc-border:rgba(74,222,128,.2);
+--shadow:0 2px 16px rgba(0,0,0,.4),0 1px 3px rgba(0,0,0,.3);
+--shadow-lg:0 16px 60px rgba(0,0,0,.6);
+--tag-bg:rgba(96,112,232,.1);--tag-text:#818cf8;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:28px 20px 32px;transition:background .2s,color .2s}
+.page-header{width:100%;max-width:720px;display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.brand-icon{width:36px;height:36px;background:transparent;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.brand-icon img{width:36px;height:36px;border-radius:10px;object-fit:cover;display:block}
+.brand-text h1{font-size:1.15rem;font-weight:700;letter-spacing:-.03em;line-height:1}
+.brand-text p{font-size:.72rem;color:var(--muted);margin-top:3px}
+.version-tag{font-size:.65rem;font-weight:600;color:var(--tag-text);background:var(--tag-bg);border-radius:4px;padding:2px 6px;letter-spacing:.02em;margin-left:4px;vertical-align:middle}
+.header-actions{display:flex;align-items:center;gap:8px}
+.btn-ghost{padding:7px 13px;background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:.79rem;font-family:inherit;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color .15s,color .15s,background .15s;text-decoration:none}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-gl)}
+.theme-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-gl)}
+.theme-btn svg{width:15px;height:15px}
+.icon-sun{display:none}.icon-moon{display:block}
+[data-theme="dark"] .icon-sun{display:block}[data-theme="dark"] .icon-moon{display:none}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;box-shadow:var(--shadow-lg);width:100%;max-width:720px;transition:background .2s,border-color .2s}
+.card-title{font-size:1rem;font-weight:700;letter-spacing:-.02em;margin-bottom:4px}
+.card-desc{font-size:.8rem;color:var(--text2);margin-bottom:24px;line-height:1.5}
+.drop-zone{border:2px dashed var(--border2);border-radius:12px;padding:36px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:border-color .15s,background .15s;background:var(--bg);position:relative}
+.drop-zone.drag-over{border-color:var(--accent);background:var(--accent-gl)}
+.drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.drop-icon{color:var(--muted)}
+.drop-icon svg{width:36px;height:36px}
+.drop-text{font-size:.85rem;color:var(--text2);text-align:center;line-height:1.5}
+.drop-text strong{color:var(--accent);cursor:pointer}
+.drop-hint{font-size:.73rem;color:var(--muted)}
+.file-info{display:none;align-items:center;gap:12px;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;margin-top:12px}
+.file-info.show{display:flex}
+.file-thumb{width:44px;height:44px;border-radius:7px;object-fit:cover;flex-shrink:0;border:1px solid var(--border)}
+.file-details{flex:1;min-width:0}
+.file-name{font-size:.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-size{font-size:.73rem;color:var(--muted);margin-top:2px}
+.file-clear{background:none;border:none;cursor:pointer;color:var(--muted);padding:4px;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:color .15s}
+.file-clear:hover{color:var(--error)}
+.file-clear svg{width:16px;height:16px}
+.btn-primary{width:100%;padding:11px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:.875rem;font-weight:600;cursor:pointer;transition:background .15s,box-shadow .15s,transform .1s;font-family:inherit;letter-spacing:-.01em;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px}
+.btn-primary:hover:not(:disabled){background:var(--accent-h);box-shadow:0 4px 18px rgba(91,109,240,.32);transform:translateY(-1px)}
+.btn-primary:active:not(:disabled){transform:none}
+.btn-primary:disabled{background:var(--accent-dis);cursor:not-allowed}
+.spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-box{display:none;background:var(--err-bg);border:1px solid var(--err-border);border-radius:8px;padding:10px 13px;font-size:.82rem;color:var(--error);margin-top:10px}
+.error-box.show{display:block}
+.success-box{display:none;background:var(--suc-bg);border:1px solid var(--suc-border);border-radius:8px;padding:10px 13px;font-size:.82rem;color:var(--success);margin-top:10px;align-items:center;gap:8px}
+.success-box.show{display:flex}
+.success-box svg{width:16px;height:16px;flex-shrink:0}
+.info-section{margin-top:28px;padding-top:24px;border-top:1px solid var(--border)}
+.info-title{font-size:.82rem;font-weight:600;color:var(--text2);margin-bottom:12px;letter-spacing:.01em;text-transform:uppercase}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.info-item{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.info-item-title{font-size:.73rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.info-item-desc{font-size:.8rem;color:var(--text2);line-height:1.4}
+footer{margin-top:24px;font-size:.73rem;color:var(--muted);text-align:center;width:100%;max-width:720px;line-height:1.7}
+footer a{color:var(--text2);text-decoration:none}
+footer a:hover{color:var(--accent)}
+.footer-social{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px}
+.social-link{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1px solid var(--border2);border-radius:8px;color:var(--text2);text-decoration:none;font-size:.79rem;font-weight:500;transition:border-color .15s,color .15s,background .15s}
+.social-link:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-gl)}
+.social-link img{width:14px;height:14px}
+@media(max-width:600px){body{padding:16px 12px 24px}.card{padding:20px}}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+    <a class="brand" href="/">
+        <div class="brand-icon">
+            <img src="/static/icons/logo.png" alt="Logo">
+        </div>
+        <div class="brand-text">
+            <h1>Xóa Metadata <span class="version-tag">26.27.09.25</span></h1>
+            <p>Xóa EXIF · GPS · Thông tin ẩn khỏi ảnh</p>
+        </div>
+    </a>
+    <div class="header-actions">
+        <a class="btn-ghost" href="https://github.com/Pixel0509/qrcode-public" target="_blank" rel="noopener">
+            <img src="/static/icons/github.svg" alt="GitHub" style="width:14px;height:14px;flex-shrink:0">
+            <span>Mã nguồn</span>
+        </a>
+        <button class="theme-btn" id="themeToggle" title="Chuyển giao diện">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-title">Xóa metadata ảnh</div>
+    <div class="card-desc">Tải ảnh lên — server xóa toàn bộ EXIF, GPS, dữ liệu ẩn và trả về file sạch. Ảnh không được lưu lại.</div>
+
+    <div class="drop-zone" id="dropZone">
+        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp,image/tiff,image/bmp">
+        <div class="drop-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+        </div>
+        <div class="drop-text">Kéo thả hoặc <strong>chọn ảnh</strong></div>
+        <div class="drop-hint">JPEG, PNG, WebP, TIFF, BMP · Tối đa 10 MB</div>
+    </div>
+
+    <div class="file-info" id="fileInfo">
+        <img class="file-thumb" id="fileThumb" src="" alt="">
+        <div class="file-details">
+            <div class="file-name" id="fileName"></div>
+            <div class="file-size" id="fileSize"></div>
+        </div>
+        <button class="file-clear" id="fileClear" title="Xóa file">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+    </div>
+
+    <div class="error-box" id="errorBox"></div>
+    <div class="success-box" id="successBox">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        <span id="successMsg"></span>
+    </div>
+
+    <button class="btn-primary" id="submitBtn" disabled data-loading="Đang xử lý...">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M12 8v4l3 3"/></svg>
+        Xóa metadata &amp; tải về
+    </button>
+
+    <div class="info-section">
+        <div class="info-title">Metadata bị xóa</div>
+        <div class="info-grid">
+            <div class="info-item">
+                <div class="info-item-title">EXIF</div>
+                <div class="info-item-desc">Thiết bị, ngày chụp, cài đặt camera</div>
+            </div>
+            <div class="info-item">
+                <div class="info-item-title">GPS</div>
+                <div class="info-item-desc">Tọa độ địa lý, địa điểm chụp</div>
+            </div>
+            <div class="info-item">
+                <div class="info-item-title">IPTC / XMP</div>
+                <div class="info-item-desc">Tác giả, bản quyền, từ khóa</div>
+            </div>
+            <div class="info-item">
+                <div class="info-item-title">ICC Profile</div>
+                <div class="info-item-desc">Thông tin màu sắc nhúng trong file</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    Dự án cá nhân &mdash; chỉ để test vui &nbsp;·&nbsp; Ảnh không được lưu lại trên server<br>
+    <a href="https://github.com/Pixel0509/qrcode-public" target="_blank" rel="noopener">Mã nguồn</a>
+    <div class="footer-social">
+        <span>Theo dõi</span>
+        <a class="social-link" href="https://tiktok.com/@ttd5t9" target="_blank" rel="noopener noreferrer">
+            <img src="/static/icons/tiktok.svg" alt="TikTok">
+            TikTok
+        </a>
+    </div>
+</footer>
+
+<script>
+(function(){
+const html = document.documentElement;
+const saved = localStorage.getItem('qr_theme');
+html.setAttribute('data-theme', saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+document.getElementById('themeToggle').addEventListener('click', () => {
+    const t = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', t);
+    localStorage.setItem('qr_theme', t);
+});
+
+const dropZone  = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+const fileInfo  = document.getElementById('fileInfo');
+const fileThumb = document.getElementById('fileThumb');
+const fileName  = document.getElementById('fileName');
+const fileSize  = document.getElementById('fileSize');
+const fileClear = document.getElementById('fileClear');
+const submitBtn = document.getElementById('submitBtn');
+const errorBox  = document.getElementById('errorBox');
+const successBox= document.getElementById('successBox');
+const successMsg= document.getElementById('successMsg');
+
+const MAX_BYTES = 10 * 1024 * 1024;
+const ALLOWED   = new Set(['image/jpeg','image/png','image/webp','image/tiff','image/bmp']);
+
+let currentFile = null;
+
+function fmtSize(b){ return b < 1024*1024 ? (b/1024).toFixed(1)+' KB' : (b/1024/1024).toFixed(2)+' MB'; }
+
+function showErr(msg){ errorBox.textContent = msg; errorBox.classList.add('show'); successBox.classList.remove('show'); }
+function clearErr(){ errorBox.classList.remove('show'); successBox.classList.remove('show'); }
+
+function setFile(file){
+    if(!ALLOWED.has(file.type)){ showErr('Định dạng không hỗ trợ (JPEG, PNG, WebP, TIFF, BMP)'); return; }
+    if(file.size > MAX_BYTES){ showErr('File vượt quá 10 MB'); return; }
+    clearErr();
+    currentFile = file;
+    fileName.textContent = file.name;
+    fileSize.textContent = fmtSize(file.size);
+    const reader = new FileReader();
+    reader.onload = e => { fileThumb.src = e.target.result; };
+    reader.readAsDataURL(file);
+    fileInfo.classList.add('show');
+    submitBtn.disabled = false;
+}
+
+function clearFile(){
+    currentFile = null;
+    fileInput.value = '';
+    fileThumb.src = '';
+    fileInfo.classList.remove('show');
+    submitBtn.disabled = true;
+    clearErr();
+}
+
+fileInput.addEventListener('change', () => { if(fileInput.files[0]) setFile(fileInput.files[0]); });
+
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    const f = e.dataTransfer.files[0];
+    if(f) setFile(f);
+});
+
+fileClear.addEventListener('click', clearFile);
+
+submitBtn.addEventListener('click', async () => {
+    if(!currentFile) return;
+    clearErr();
+    const orig = submitBtn.innerHTML;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner"></span>' + (submitBtn.dataset.loading || '...');
+
+    try {
+        const fd = new FormData();
+        fd.append('image', currentFile);
+        const res = await fetch('/strip-metadata', { method: 'POST', body: fd });
+
+        if(!res.ok){
+            const j = await res.json().catch(() => ({}));
+            showErr(j.error || 'Lỗi server');
+            return;
+        }
+
+        const blob = await res.blob();
+        const ext  = currentFile.name.includes('.') ? currentFile.name.rsplit ? '' : currentFile.name.split('.').pop() : 'jpg';
+        const base = currentFile.name.replace(/\.[^.]+$/, '');
+        const url  = URL.createObjectURL(blob);
+        const a    = document.createElement('a');
+        a.href     = url;
+        a.download = base + '_clean.' + (currentFile.name.split('.').pop() || 'jpg');
+        a.click();
+        URL.revokeObjectURL(url);
+
+        successMsg.textContent = 'Đã xóa metadata — file đang tải về.';
+        successBox.classList.add('show');
+    } catch(e){
+        showErr('Lỗi kết nối, vui lòng thử lại');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = orig;
+    }
+});
+})();
+</script>
+</body>
+</html>
