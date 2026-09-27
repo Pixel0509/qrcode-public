@@ -2,9 +2,9 @@
 
 > Dự án cá nhân — chỉ để test vui. Không dùng cho mục đích thương mại.
 
-**Version:** 26.09.23.10
+**Version:** 26.09.27
 
-Ứng dụng web tạo mã QR hỗ trợ 6 loại nội dung: Ảnh, Văn bản, URL, Email, Wi-Fi, Sự kiện.
+Ứng dụng web tạo mã QR hỗ trợ 6 loại nội dung: Ảnh, Văn bản, URL, Email, Wi-Fi, Sự kiện. Hỗ trợ 2 ngôn ngữ: Tiếng Việt (`/vi/qrcode`) và Tiếng Anh (`/en/qrcode`).
 
 ## Tính năng
 
@@ -14,12 +14,13 @@
 - Tab Email: tạo QR kích hoạt soạn email (to, subject, body)
 - Tab Wi-Fi: tạo QR kết nối mạng không dây
 - Tab Sự kiện: tạo QR lịch iCalendar (tiêu đề, địa điểm, ngày bắt đầu/kết thúc, mô tả)
+- Tab Quét QR: đọc QR từ ảnh upload / dán / URL
 - Tải mã QR: PNG, SVG, JPEG, Sao chép vào clipboard
 - Giao diện sáng/tối, responsive
 - Chống spam server-side bằng HMAC token (không thể bypass bằng F12/xóa localStorage)
-- Cooldown: tab Ảnh 2 phút/lượt, 5 tab còn lại 30 giây/lượt (dùng chung)
-- Tải mã nguồn trực tiếp từ ứng dụng (`/source` → `src.zip`)
-- Footer: link TikTok
+- Cooldown: tab Ảnh 2 phút/lượt, các tab còn lại 30 giây/lượt
+- Nút chuyển ngôn ngữ hiển thị cờ quốc kỳ (`static/icons/vi.webp`, `static/icons/en.webp`)
+- Mã nguồn công khai tại GitHub
 
 ## Cấu trúc
 
@@ -30,12 +31,18 @@ qr-generator/
 ├── vercel.json
 ├── README.md
 ├── templates/
-│   └── index.html
+│   ├── vi/
+│   │   └── index.html
+│   ├── en/
+│   │   └── index.html
+│   └── 404.html
 └── static/
     ├── favicon/
     │   └── favicon.png
     └── icons/
-        └── tiktok.svg
+        ├── tiktok.svg
+        ├── vi.webp
+        └── en.webp
 ```
 
 ## Cài đặt & chạy local
@@ -70,6 +77,10 @@ Tab Ảnh yêu cầu API key ImgBB. Mỗi người dùng tự nhập key tại `
 ## Cơ chế chống spam
 
 Cooldown được thực thi server-side bằng HMAC-SHA256 token. Sau mỗi lần tạo QR thành công, server trả về `cd_token` (gồm `kind:timestamp:hmac`), client lưu và gửi kèm lần sau. Server verify chữ ký + thời gian — xóa localStorage không có tác dụng vì token không hợp lệ sẽ bị từ chối.
+
+## Mã nguồn
+
+GitHub: https://github.com/Pixel0509/qrcode-public
 
 ## Lưu ý
 
