@@ -5,9 +5,7 @@ import io
 import os
 import threading
 import time
-import zipfile
-
-from flask import Flask, render_template, request, jsonify, send_from_directory, send_file
+from flask import Flask, render_template, request, jsonify, send_from_directory
 import qrcode
 import requests
 
@@ -233,32 +231,6 @@ def qrtext():
     except Exception:
         return jsonify({"success": False, "error": "Lỗi tạo mã QR"})
 
-
-@app.route("/source", methods=["GET"])
-def download_source():
-    base = os.path.dirname(os.path.abspath(__file__))
-    include = [
-        "app.py",
-        "requirements.txt",
-        "vercel.json",
-        "README.md",
-        "templates/index.html",
-        "templates/404.html",
-        "static/favicon/favicon.png",
-    ]
-    buf = io.BytesIO()
-    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as zf:
-        for rel in include:
-            fpath = os.path.join(base, rel)
-            if os.path.isfile(fpath):
-                zf.write(fpath, "src/" + rel)
-    buf.seek(0)
-    return send_file(
-        buf,
-        mimetype="application/zip",
-        as_attachment=True,
-        download_name="src.zip",
-    )
 
 
 @app.errorhandler(404)
