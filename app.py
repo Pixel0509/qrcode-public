@@ -198,6 +198,57 @@ def qrtext():
         return jsonify({"success": False, "error": "Lỗi tạo mã QR"})
 
 
+@app.route("/delete-metadata")
+def delete_metadata():
+    return render_template("delete-metadata/index.html")
+
+
+@app.route("/strip-metadata", methods=["POST"])
+def strip_metadata():
+    file = request.files.get("image")
+    if not file or not file.filename:
+        return jsonify({"error": "Chưa chọn file ảnh"}), 400
+
+    allowed_mime = {"image/jpeg", "image/png", "image/webp", "image/tiff", "image/bmp"}
+    if (file.content_type or "") not in allowed_mime:
+        return jsonify({"error": "Định dạng không hỗ trợ"}), 400
+
+    _MAX = 10 * 1024 * 1024
+    try:
+        data = file.read(_MAX + 1)
+        if len(data) > _MAX:
+            return jsonify({"error": "File vượt quá 10 MB"}), 400
+
+        from PIL import Image
+        src = io.BytesIO(data)
+        img = Image.open(src)
+        img.load()
+
+        out_fmt = img.format or "JPEG"
+        mime_map = {"JPEG": "image/jpeg", "PNG": "image/png", "WEBP": "image/webp",
+                    "TIFF": "image/tiff", "BMP": "image/bmp"}
+
+        clean = Image.new(img.mode, img.size)
+        clean.putdata(list(img.getdata()))
+
+        buf = io.BytesIO()
+        save_kw = {"format": out_fmt}
+        if out_fmt == "JPEG":
+            save_kw["quality"] = 95
+            save_kw["subsampling"] = 0
+        clean.save(buf, **save_kw)
+        buf.seek(0)
+
+        from flask import Response
+        return Response(
+            buf.read(),
+            mimetype=mime_map.get(out_fmt, "image/jpeg"),
+            headers={"Content-Disposition": "attachment"},
+        )
+    except Exception:
+        return jsonify({"error": "Lỗi xử lý ảnh"}), 500
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html"), 404
