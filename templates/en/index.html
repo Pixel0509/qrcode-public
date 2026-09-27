@@ -218,7 +218,7 @@ body{padding:16px 12px 24px}
             <span id="langLabel">VI</span>
         </a>
         <a class="btn-ghost" href="https://github.com/Pixel0509/qrcode-public" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            <img src="/static/icons/github.svg" alt="GitHub" style="width:14px;height:14px;flex-shrink:0">
             <span>Source</span>
         </a>
         <button class="theme-btn" id="themeToggle" title="Toggle theme">
@@ -726,7 +726,7 @@ function showErr(el, msg) { el.textContent = msg; el.style.display = 'block'; }
 function hideErr(el) { el.style.display = 'none'; }
 function setLoading(btn, yes, orig) {
     btn.disabled = yes;
-    btn.innerHTML = yes ? '<span class="spinner"></span>Processing...' : orig;
+    btn.innerHTML = yes ? '<span class="spinner"></span>' + (btn.dataset.loading || '...') : orig;
 }
 
 function getTok(key) { try { return localStorage.getItem(key) || ''; } catch(_) { return ''; } }
