@@ -3,7 +3,7 @@
 > Dự án cá nhân — chỉ để test vui. Không dùng cho mục đích thương mại.  
 > Personal project — just for fun. Not for commercial use.
 
-**Version:** 26.09.27  
+**Version:** 26.27.09.25  
 **GitHub:** https://github.com/Pixel0509/qrcode-public
 
 ---
