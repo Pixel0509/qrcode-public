@@ -218,7 +218,7 @@ body{padding:16px 12px 24px}
             <span id="langLabel">VI</span>
         </a>
         <a class="btn-ghost" href="https://github.com/Pixel0509/qrcode-public" target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            <img src="/static/icons/github.svg" alt="GitHub" style="width:14px;height:14px;flex-shrink:0">
             <span>Mã nguồn</span>
         </a>
         <button class="theme-btn" id="themeToggle" title="Chuyển giao diện">
@@ -284,7 +284,7 @@ body{padding:16px 12px 24px}
                     </div>
                 </div>
             </div>
-            <button class="btn-primary" id="imgBtn" disabled>Tạo mã QR</button>
+            <button class="btn-primary" id="imgBtn" data-loading="Đang xử lý..." disabled>Tạo mã QR</button>
             <div class="error-box" id="imgError"></div>
         </div>
 
@@ -294,13 +294,13 @@ body{padding:16px 12px 24px}
                 <textarea id="textInput" placeholder="Nhập nội dung cần mã hóa..." maxlength="4096"></textarea>
                 <div class="char-count" id="textCount">0 / 4096</div>
             </div>
-            <button class="btn-primary" id="textBtn">Tạo mã QR</button>
+            <button class="btn-primary" id="textBtn" data-loading="Đang xử lý...">Tạo mã QR</button>
             <div class="error-box" id="textError"></div>
         </div>
 
         <div id="panel-url" class="panel">
             <div class="field"><label>Địa chỉ URL</label><input type="url" id="urlInput" placeholder="https://example.com" maxlength="2048"></div>
-            <button class="btn-primary" id="urlBtn">Tạo mã QR</button>
+            <button class="btn-primary" id="urlBtn" data-loading="Đang xử lý...">Tạo mã QR</button>
             <div class="error-box" id="urlError"></div>
         </div>
 
@@ -308,7 +308,7 @@ body{padding:16px 12px 24px}
             <div class="field"><label>Địa chỉ email</label><input type="email" id="emailTo" placeholder="someone@example.com" maxlength="254"></div>
             <div class="field"><label>Tiêu đề</label><input type="text" id="emailSubject" placeholder="Tiêu đề email" maxlength="998"></div>
             <div class="field"><label>Nội dung</label><textarea id="emailBody" placeholder="Nội dung email..." maxlength="2000"></textarea></div>
-            <button class="btn-primary" id="emailBtn">Tạo mã QR</button>
+            <button class="btn-primary" id="emailBtn" data-loading="Đang xử lý...">Tạo mã QR</button>
             <div class="error-box" id="emailError"></div>
         </div>
 
@@ -331,7 +331,7 @@ body{padding:16px 12px 24px}
                     <select id="wifiHidden"><option value="false">Không</option><option value="true">Có</option></select>
                 </div>
             </div>
-            <button class="btn-primary" id="wifiBtn">Tạo mã QR</button>
+            <button class="btn-primary" id="wifiBtn" data-loading="Đang xử lý...">Tạo mã QR</button>
             <div class="error-box" id="wifiError"></div>
         </div>
 
@@ -352,7 +352,7 @@ body{padding:16px 12px 24px}
                 <label>Mô tả</label>
                 <textarea id="evDesc" placeholder="Mô tả sự kiện..." style="min-height:62px" maxlength="1000"></textarea>
             </div>
-            <button class="btn-primary" id="eventBtn">Tạo mã QR</button>
+            <button class="btn-primary" id="eventBtn" data-loading="Đang xử lý...">Tạo mã QR</button>
             <div class="error-box" id="eventError"></div>
         </div>
 
@@ -726,7 +726,7 @@ function showErr(el, msg) { el.textContent = msg; el.style.display = 'block'; }
 function hideErr(el) { el.style.display = 'none'; }
 function setLoading(btn, yes, orig) {
     btn.disabled = yes;
-    btn.innerHTML = yes ? '<span class="spinner"></span>Đang xử lý...' : orig;
+    btn.innerHTML = yes ? '<span class="spinner"></span>' + (btn.dataset.loading || '...') : orig;
 }
 
 function getTok(key) { try { return localStorage.getItem(key) || ''; } catch(_) { return ''; } }
