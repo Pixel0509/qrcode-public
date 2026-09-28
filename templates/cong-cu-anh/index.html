@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Công Cụ Ảnh - Miễn Phí</title>
+<link rel="icon" type="image/png" sizes="512x512" href="/static/favicon/favicon.png">
+<link rel="apple-touch-icon" sizes="512x512" href="/static/favicon/favicon.png">
+<link rel="shortcut icon" href="/favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root[data-theme="light"]{
+--bg:#f0f2fa;--bg2:#e6e9f5;--surface:#fff;--border:#dde0ee;--border2:#c8cce0;
+--text:#0f1226;--text2:#555a7a;--muted:#9298b8;
+--accent:#5b6df0;--accent-h:#6b7cf5;--accent-gl:rgba(91,109,240,.09);--accent-dis:rgba(91,109,240,.4);
+--error:#dc2626;--err-bg:rgba(220,38,38,.07);--err-border:rgba(220,38,38,.2);
+--success:#16a34a;--suc-bg:rgba(22,163,74,.07);--suc-border:rgba(22,163,74,.2);
+--shadow:0 2px 16px rgba(91,109,240,.09),0 1px 3px rgba(0,0,0,.05);
+--shadow-lg:0 8px 40px rgba(91,109,240,.13),0 2px 8px rgba(0,0,0,.07);
+--tag-bg:#f0f2fc;--tag-text:#6070d8;
+}
+:root[data-theme="dark"]{
+--bg:#080a10;--bg2:#0d0f18;--surface:#111420;--border:#1e2235;--border2:#272d44;
+--text:#eaecf5;--text2:#8890b0;--muted:#4a5070;
+--accent:#6070e8;--accent-h:#7080f0;--accent-gl:rgba(96,112,232,.13);--accent-dis:rgba(96,112,232,.32);
+--error:#f87171;--err-bg:rgba(248,113,113,.07);--err-border:rgba(248,113,113,.22);
+--success:#4ade80;--suc-bg:rgba(74,222,128,.07);--suc-border:rgba(74,222,128,.2);
+--shadow:0 2px 16px rgba(0,0,0,.4),0 1px 3px rgba(0,0,0,.3);
+--shadow-lg:0 16px 60px rgba(0,0,0,.6);
+--tag-bg:rgba(96,112,232,.1);--tag-text:#818cf8;
+}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:28px 20px 32px;transition:background .2s,color .2s}
+.page-header{width:100%;max-width:760px;display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
+.brand-icon{width:36px;height:36px;border-radius:10px;overflow:hidden;flex-shrink:0}
+.brand-icon img{width:36px;height:36px;object-fit:cover;display:block}
+.brand-text h1{font-size:1.15rem;font-weight:700;letter-spacing:-.03em;line-height:1}
+.brand-text p{font-size:.72rem;color:var(--muted);margin-top:3px}
+.beta-tag{font-size:.65rem;font-weight:700;color:#f97316;background:rgba(249,115,22,.12);border:1px solid rgba(249,115,22,.3);border-radius:4px;padding:2px 7px;letter-spacing:.04em;margin-left:4px;vertical-align:middle}
+.header-actions{display:flex;align-items:center;gap:8px}
+.btn-ghost{padding:7px 13px;background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:.79rem;font-family:inherit;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color .15s,color .15s,background .15s;text-decoration:none}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-gl)}
+.theme-btn{width:34px;height:34px;border-radius:50%;border:1px solid var(--border2);background:var(--surface);color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.theme-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-gl)}
+.theme-btn svg{width:15px;height:15px}
+.icon-sun{display:none}.icon-moon{display:block}
+[data-theme="dark"] .icon-sun{display:block}[data-theme="dark"] .icon-moon{display:none}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-lg);width:100%;max-width:760px;transition:background .2s,border-color .2s;overflow:hidden}
+.group-tabs{display:flex;border-bottom:2px solid var(--border);background:var(--bg2)}
+.group-tab{flex:1;padding:13px 8px;background:transparent;border:none;font-family:inherit;font-size:.85rem;font-weight:600;color:var(--text2);cursor:pointer;transition:color .15s,background .15s;display:flex;align-items:center;justify-content:center;gap:7px}
+.group-tab:hover{color:var(--text);background:var(--accent-gl)}
+.group-tab.active{color:var(--accent);background:var(--surface);border-bottom:2px solid var(--accent);margin-bottom:-2px}
+.group-tab svg{width:15px;height:15px;flex-shrink:0}
+.group-panel{display:none}
+.group-panel.active{display:block}
+.sub-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg)}
+.sub-tab{flex:1;padding:10px 8px;background:transparent;border:none;font-family:inherit;font-size:.78rem;font-weight:500;color:var(--muted);cursor:pointer;transition:color .15s,background .15s;display:flex;align-items:center;justify-content:center;gap:5px}
+.sub-tab:hover{color:var(--text2)}
+.sub-tab.active{color:var(--accent);border-bottom:2px solid var(--accent);margin-bottom:-1px;background:var(--surface)}
+.sub-tab svg{width:13px;height:13px;flex-shrink:0}
+.panel{display:none;padding:22px}
+.panel.active{display:block}
+.drop-zone{border:2px dashed var(--border2);border-radius:12px;padding:28px 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;transition:border-color .15s,background .15s;background:var(--bg);position:relative}
+.drop-zone.drag-over{border-color:var(--accent);background:var(--accent-gl)}
+.drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.drop-icon svg{width:32px;height:32px;color:var(--muted)}
+.drop-text{font-size:.85rem;color:var(--text2);text-align:center}
+.drop-text strong{color:var(--accent)}
+.drop-hint{font-size:.72rem;color:var(--muted)}
+.file-info{display:none;align-items:center;gap:12px;padding:10px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:10px;margin-top:10px}
+.file-info.show{display:flex}
+.file-thumb{width:40px;height:40px;border-radius:7px;object-fit:cover;flex-shrink:0;border:1px solid var(--border)}
+.file-details{flex:1;min-width:0}
+.file-name{font-size:.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.file-size{font-size:.72rem;color:var(--muted);margin-top:2px}
+.file-clear{background:none;border:none;cursor:pointer;color:var(--muted);padding:4px;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:color .15s;flex-shrink:0}
+.file-clear:hover{color:var(--error)}
+.file-clear svg{width:15px;height:15px}
+.field{margin-top:12px}
+.field label{display:block;font-size:.8rem;font-weight:600;color:var(--text2);margin-bottom:5px}
+.field input[type=text]{width:100%;padding:9px 12px;background:var(--bg);border:1px solid var(--border2);border-radius:8px;color:var(--text);font-family:inherit;font-size:.85rem;transition:border-color .15s}
+.field input[type=text]:focus{outline:none;border-color:var(--accent)}
+.field input[type=range]{width:100%;accent-color:var(--accent);margin-top:4px}
+.format-row{display:flex;align-items:center;gap:8px;margin-top:12px;flex-wrap:wrap}
+.format-row label{font-size:.8rem;font-weight:600;color:var(--text2);white-space:nowrap}
+.fmt-btn{padding:5px 12px;border:1px solid var(--border2);border-radius:6px;background:transparent;color:var(--text2);font-size:.78rem;font-weight:500;font-family:inherit;cursor:pointer;transition:all .15s}
+.fmt-btn.active,.fmt-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-gl)}
+.btn-primary{width:100%;padding:11px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-size:.875rem;font-weight:600;cursor:pointer;transition:background .15s,box-shadow .15s,transform .1s;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px}
+.btn-primary:hover:not(:disabled){background:var(--accent-h);box-shadow:0 4px 18px rgba(91,109,240,.32);transform:translateY(-1px)}
+.btn-primary:active:not(:disabled){transform:none}
+.btn-primary:disabled{background:var(--accent-dis);cursor:not-allowed}
+.spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-box{display:none;background:var(--err-bg);border:1px solid var(--err-border);border-radius:8px;padding:10px 13px;font-size:.82rem;color:var(--error);margin-top:10px}
+.error-box.show{display:block}
+.success-box{display:none;background:var(--suc-bg);border:1px solid var(--suc-border);border-radius:8px;padding:10px 13px;font-size:.82rem;color:var(--success);margin-top:10px;align-items:center;gap:8px}
+.success-box.show{display:flex}
+.success-box svg{width:15px;height:15px;flex-shrink:0}
+.compress-info{font-size:.78rem;color:var(--text2);margin-top:6px;display:none}
+.compress-info.show{display:block}
+.meta-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.82rem}
+.meta-table th{text-align:left;padding:7px 10px;background:var(--bg2);color:var(--text2);font-weight:600;font-size:.73rem;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border)}
+.meta-table td{padding:7px 10px;border-bottom:1px solid var(--border);word-break:break-all}
+.meta-table tr:last-child td{border-bottom:none}
+.meta-table .key{color:var(--text2);font-weight:500;width:160px;min-width:110px}
+.meta-empty{text-align:center;color:var(--muted);padding:24px;font-size:.85rem}
+#readResult{max-height:300px;overflow-y:auto;border-radius:8px;margin-top:4px}
+footer{margin-top:24px;font-size:.73rem;color:var(--muted);text-align:center;width:100%;max-width:760px;line-height:1.7}
+footer a{color:var(--text2);text-decoration:none}
+footer a:hover{color:var(--accent)}
+.footer-social{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px}
+.social-link{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1px solid var(--border2);border-radius:8px;color:var(--text2);text-decoration:none;font-size:.79rem;font-weight:500;transition:border-color .15s,color .15s,background .15s}
+.social-link:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-gl)}
+.social-link img{width:14px;height:14px}
+@media(max-width:600px){body{padding:16px 12px 24px}.panel{padding:14px}.sub-tab,.group-tab{font-size:.73rem;gap:4px}.header-actions .btn-ghost span{display:none}}
+</style>
+</head>
+<body>
+
+<div class="page-header">
+    <a class="brand" href="/">
+        <div class="brand-icon"><img src="/static/icons/logo.png" alt="Logo"></div>
+        <div class="brand-text">
+            <h1>Công Cụ Ảnh <span class="beta-tag">Beta Version</span></h1>
+            <p>Sửa metadata · Nén ảnh &nbsp;·&nbsp; <span style="color:#f97316;font-weight:600">Bản thử nghiệm</span></p>
+        </div>
+    </a>
+    <div class="header-actions">
+        <a class="btn-ghost" href="/vi/qrcode">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="3" y="15" width="6" height="6" rx="1"/><rect x="5" y="5" width="2" height="2" fill="currentColor"/><rect x="17" y="5" width="2" height="2" fill="currentColor"/><rect x="5" y="17" width="2" height="2" fill="currentColor"/><path d="M15 15h2v2h-2zM17 17h2v2h-2zM15 19h2v2h-2z"/></svg>
+            <span>Tạo mã QR</span>
+        </a>
+        <a class="btn-ghost" href="https://github.com/Pixel0509/qrcode-public" target="_blank" rel="noopener">
+            <img src="/static/icons/github.svg" alt="GitHub" style="width:14px;height:14px;flex-shrink:0">
+            <span>Mã nguồn</span>
+        </a>
+        <button class="theme-btn" id="themeToggle" title="Chuyển giao diện">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </button>
+    </div>
+</div>
+
+<div class="card">
+    <div class="group-tabs">
+        <button class="group-tab active" data-group="meta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            Sửa Metadata ảnh
+        </button>
+        <button class="group-tab" data-group="compress">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Nén ảnh
+        </button>
+    </div>
+
+    <div class="group-panel active" id="group-meta">
+        <div class="sub-tabs">
+            <button class="sub-tab active" data-sub="strip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+                Xóa Metadata
+            </button>
+            <button class="sub-tab" data-sub="sign">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                Ký Tên
+            </button>
+            <button class="sub-tab" data-sub="read">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                Đọc Metadata
+            </button>
+        </div>
+
+        <div class="panel active" id="panel-strip">
+            <div class="drop-zone" id="stripDrop">
+                <input type="file" id="stripInput" accept="image/jpeg,image/png,image/webp,image/tiff,image/bmp">
+                <div class="drop-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+                <div class="drop-text">Kéo thả hoặc <strong>chọn ảnh</strong></div>
+                <div class="drop-hint">JPEG, PNG, WebP, TIFF, BMP · Tối đa 10 MB</div>
+            </div>
+            <div class="file-info" id="stripInfo">
+                <img class="file-thumb" id="stripThumb" src="" alt="">
+                <div class="file-details"><div class="file-name" id="stripName"></div><div class="file-size" id="stripSize"></div></div>
+                <button class="file-clear" id="stripClear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            </div>
+            <div class="format-row">
+                <label>Lưu dạng:</label>
+                <button class="fmt-btn active" data-fmt="original">Giữ nguyên</button>
+                <button class="fmt-btn" data-fmt="image/png">PNG</button>
+                <button class="fmt-btn" data-fmt="image/jpeg">JPEG</button>
+                <button class="fmt-btn" data-fmt="image/webp">WebP</button>
+            </div>
+            <div class="error-box" id="stripErr"></div>
+            <div class="success-box" id="stripOk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span id="stripOkMsg"></span></div>
+            <button class="btn-primary" id="stripBtn" disabled data-loading="Đang xử lý...">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/></svg>
+                Xóa metadata &amp; tải về
+            </button>
+        </div>
+
+        <div class="panel" id="panel-sign">
+            <div class="drop-zone" id="signDrop">
+                <input type="file" id="signInput" accept="image/jpeg,image/png,image/webp,image/tiff,image/bmp">
+                <div class="drop-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+                <div class="drop-text">Kéo thả hoặc <strong>chọn ảnh</strong></div>
+                <div class="drop-hint">JPEG, PNG, WebP, TIFF, BMP · Tối đa 10 MB</div>
+            </div>
+            <div class="file-info" id="signInfo">
+                <img class="file-thumb" id="signThumb" src="" alt="">
+                <div class="file-details"><div class="file-name" id="signName"></div><div class="file-size" id="signSize"></div></div>
+                <button class="file-clear" id="signClear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            </div>
+            <div class="field"><label>Tên tác giả (Artist)</label><input type="text" id="signArtist" placeholder="Nhập tên tác giả..." maxlength="200"></div>
+            <div class="field"><label>Mô tả ảnh (Description)</label><input type="text" id="signDesc" placeholder="Nhập mô tả..." maxlength="500"></div>
+            <div class="format-row">
+                <label>Lưu dạng:</label>
+                <button class="fmt-btn active" data-fmt="original">Giữ nguyên</button>
+                <button class="fmt-btn" data-fmt="image/png">PNG</button>
+                <button class="fmt-btn" data-fmt="image/jpeg">JPEG</button>
+                <button class="fmt-btn" data-fmt="image/webp">WebP</button>
+            </div>
+            <div class="error-box" id="signErr"></div>
+            <div class="success-box" id="signOk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span id="signOkMsg"></span></div>
+            <button class="btn-primary" id="signBtn" disabled data-loading="Đang xử lý...">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                Ghi metadata &amp; tải về
+            </button>
+        </div>
+
+        <div class="panel" id="panel-read">
+            <div class="drop-zone" id="readDrop">
+                <input type="file" id="readInput" accept="image/jpeg,image/png,image/webp,image/tiff,image/bmp">
+                <div class="drop-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+                <div class="drop-text">Kéo thả hoặc <strong>chọn ảnh</strong></div>
+                <div class="drop-hint">JPEG, PNG, WebP, TIFF, BMP · Tối đa 10 MB</div>
+            </div>
+            <div class="file-info" id="readInfo">
+                <img class="file-thumb" id="readThumb" src="" alt="">
+                <div class="file-details"><div class="file-name" id="readName"></div><div class="file-size" id="readSize"></div></div>
+                <button class="file-clear" id="readClear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            </div>
+            <div class="error-box" id="readErr"></div>
+            <button class="btn-primary" id="readBtn" disabled data-loading="Đang đọc...">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+                Đọc metadata
+            </button>
+            <div id="readResult"></div>
+        </div>
+    </div>
+
+    <div class="group-panel" id="group-compress">
+        <div class="panel active" id="panel-compress">
+            <div class="drop-zone" id="compDrop">
+                <input type="file" id="compInput" accept="image/jpeg,image/png,image/webp,image/bmp">
+                <div class="drop-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+                <div class="drop-text">Kéo thả hoặc <strong>chọn ảnh</strong></div>
+                <div class="drop-hint">JPEG, PNG, WebP, BMP · Tối đa 30 MB · Xử lý trên trình duyệt</div>
+            </div>
+            <div class="file-info" id="compInfo">
+                <img class="file-thumb" id="compThumb" src="" alt="">
+                <div class="file-details"><div class="file-name" id="compName"></div><div class="file-size" id="compSize"></div></div>
+                <button class="file-clear" id="compClear"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+            </div>
+            <div class="field">
+                <label>Dung lượng tối đa: <span id="maxSizeLabel">1 MB</span></label>
+                <input type="range" id="maxSizeRange" min="1" max="10" value="1" step="1">
+            </div>
+            <div class="format-row">
+                <label>Lưu dạng:</label>
+                <button class="fmt-btn active" data-fmt="image/png" id="compFmtPng">PNG</button>
+                <button class="fmt-btn" data-fmt="image/jpeg" id="compFmtJpeg">JPEG</button>
+                <button class="fmt-btn" data-fmt="image/webp" id="compFmtWebp">WebP</button>
+            </div>
+            <div class="error-box" id="compErr"></div>
+            <div class="success-box" id="compOk"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg><span id="compOkMsg"></span></div>
+            <div class="compress-info" id="compStats"></div>
+            <button class="btn-primary" id="compBtn" disabled data-loading="Đang nén...">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Nén &amp; tải về
+            </button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    Dự án cá nhân &mdash; chỉ để test vui &nbsp;·&nbsp; Ảnh không được lưu lại trên server<br>
+    <span style="color:#f97316;font-size:.7rem;font-weight:600">⚠ Bản thử nghiệm — có thể còn lỗi</span><br>
+    <a href="https://github.com/Pixel0509/qrcode-public" target="_blank" rel="noopener">Mã nguồn</a>
+    <div class="footer-social">
+        <span>Theo dõi</span>
+        <a class="social-link" href="https://tiktok.com/@ttd5t9" target="_blank" rel="noopener noreferrer">
+            <img src="/static/icons/tiktok.svg" alt="TikTok">TikTok
+        </a>
+    </div>
+</footer>
+
+<script>
+(function(){
+const html = document.documentElement;
+const saved = localStorage.getItem('qr_theme');
+html.setAttribute('data-theme', saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+document.getElementById('themeToggle').addEventListener('click', () => {
+    const t = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', t);
+    localStorage.setItem('qr_theme', t);
+});
+
+document.querySelectorAll('.group-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.group-tab').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.group-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('group-' + btn.dataset.group).classList.add('active');
+    });
+});
+
+document.querySelectorAll('.sub-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.sub-tab').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('#group-meta .panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('panel-' + btn.dataset.sub).classList.add('active');
+    });
+});
+
+const MAX_META = 10 * 1024 * 1024;
+const MAX_COMP = 30 * 1024 * 1024;
+const TYPES_META = new Set(['image/jpeg','image/png','image/webp','image/tiff','image/bmp']);
+const TYPES_COMP = new Set(['image/jpeg','image/png','image/webp','image/bmp']);
+
+function fmtSize(b){ return b < 1024*1024 ? (b/1024).toFixed(1)+' KB' : (b/1024/1024).toFixed(2)+' MB'; }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function showErr(id,msg){ const el=document.getElementById(id); el.textContent=msg; el.classList.add('show'); }
+function hideErr(id){ document.getElementById(id).classList.remove('show'); }
+function showOk(id,msgId,msg){ document.getElementById(id).classList.add('show'); document.getElementById(msgId).textContent=msg; }
+function hideOk(id){ document.getElementById(id).classList.remove('show'); }
+function setLoading(btn,yes,orig){ btn.disabled=yes; btn.innerHTML=yes?'<span class="spinner"></span>'+(btn.dataset.loading||'...'):orig; }
+function triggerDownload(blob,filename){ const u=URL.createObjectURL(blob),a=document.createElement('a'); a.href=u; a.download=filename; a.click(); URL.revokeObjectURL(u); }
+
+function fmtExt(mime){ return {['image/jpeg']:'jpg',['image/png']:'png',['image/webp']:'webp',['image/tiff']:'tiff',['image/bmp']:'bmp'}[mime]||'png'; }
+
+function makeFmtRow(panelId){
+    const btns = document.querySelectorAll(`#${panelId} .fmt-btn`);
+    let selected = 'original';
+    btns.forEach(b => { b.addEventListener('click', () => { btns.forEach(x=>x.classList.remove('active')); b.classList.add('active'); selected=b.dataset.fmt; }); });
+    return { get: () => selected };
+}
+
+function makeZone(dropId, inputId, infoId, thumbId, nameId, sizeId, clearId, btnId, maxBytes, types, onFile){
+    const drop=document.getElementById(dropId), input=document.getElementById(inputId),
+          info=document.getElementById(infoId), thumb=document.getElementById(thumbId),
+          fname=document.getElementById(nameId), fsize=document.getElementById(sizeId),
+          clear=document.getElementById(clearId), btn=document.getElementById(btnId);
+    let file=null;
+    function setFile(f){
+        if(!types.has(f.type)){ onFile(null,'Định dạng không hỗ trợ'); return; }
+        if(f.size>maxBytes){ onFile(null,`File vượt quá ${fmtSize(maxBytes)}`); return; }
+        file=f; fname.textContent=f.name; fsize.textContent=fmtSize(f.size);
+        const r=new FileReader(); r.onload=e=>{thumb.src=e.target.result;}; r.readAsDataURL(f);
+        info.classList.add('show'); btn.disabled=false; onFile(f,null);
+    }
+    function clearFile(){ file=null; input.value=''; thumb.src=''; info.classList.remove('show'); btn.disabled=true; onFile(null,null); }
+    input.addEventListener('change',()=>{ if(input.files[0]) setFile(input.files[0]); });
+    drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('drag-over');});
+    drop.addEventListener('dragleave',()=>drop.classList.remove('drag-over'));
+    drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('drag-over');if(e.dataTransfer.files[0])setFile(e.dataTransfer.files[0]);});
+    clear.addEventListener('click',clearFile);
+    return { getFile:()=>file };
+}
+
+async function doPost(url,fd){ const r=await fetch(url,{method:'POST',body:fd}); if(!r.ok){const j=await r.json().catch(()=>({}));throw new Error(j.error||'Lỗi server');} return r; }
+
+const stripFmt = makeFmtRow('panel-strip');
+const stripZone = makeZone('stripDrop','stripInput','stripInfo','stripThumb','stripName','stripSize','stripClear','stripBtn',MAX_META,TYPES_META,
+    (f,err)=>{ hideErr('stripErr'); hideOk('stripOk'); if(err) showErr('stripErr',err); });
+const stripBtn = document.getElementById('stripBtn');
+stripBtn.addEventListener('click', async () => {
+    const f=stripZone.getFile(); if(!f) return;
+    hideErr('stripErr'); hideOk('stripOk');
+    const orig=stripBtn.innerHTML; setLoading(stripBtn,true,orig);
+    try {
+        const fd=new FormData(); fd.append('image',f);
+        const fmt=stripFmt.get();
+        if(fmt!=='original') fd.append('out_format',fmt);
+        const res=await doPost('/strip-metadata',fd);
+        const blob=await res.blob();
+        const base=f.name.replace(/\.[^.]+$/,'');
+        const ext=fmt==='original'?f.name.split('.').pop():fmtExt(fmt);
+        triggerDownload(blob, base+'_clean.'+ext);
+        showOk('stripOk','stripOkMsg','Đã xóa metadata — file đang tải về.');
+    } catch(e){ showErr('stripErr',e.message); }
+    finally{ setLoading(stripBtn,false,orig); }
+});
+
+const signFmt = makeFmtRow('panel-sign');
+const signZone = makeZone('signDrop','signInput','signInfo','signThumb','signName','signSize','signClear','signBtn',MAX_META,TYPES_META,
+    (f,err)=>{ hideErr('signErr'); hideOk('signOk'); if(err) showErr('signErr',err); });
+const signBtn = document.getElementById('signBtn');
+signBtn.addEventListener('click', async () => {
+    const f=signZone.getFile(); if(!f) return;
+    const artist=document.getElementById('signArtist').value.trim();
+    const desc=document.getElementById('signDesc').value.trim();
+    if(!artist&&!desc){ showErr('signErr','Nhập ít nhất tên tác giả hoặc mô tả.'); return; }
+    hideErr('signErr'); hideOk('signOk');
+    const orig=signBtn.innerHTML; setLoading(signBtn,true,orig);
+    try {
+        const fd=new FormData(); fd.append('image',f); fd.append('artist',artist); fd.append('desc',desc);
+        const fmt=signFmt.get();
+        if(fmt!=='original') fd.append('out_format',fmt);
+        const res=await doPost('/sign-image',fd);
+        const blob=await res.blob();
+        const base=f.name.replace(/\.[^.]+$/,'');
+        const ext=fmt==='original'?f.name.split('.').pop():fmtExt(fmt);
+        triggerDownload(blob, base+'_signed.'+ext);
+        showOk('signOk','signOkMsg','Đã ghi metadata — file đang tải về.');
+    } catch(e){ showErr('signErr',e.message); }
+    finally{ setLoading(signBtn,false,orig); }
+});
+
+const readZone = makeZone('readDrop','readInput','readInfo','readThumb','readName','readSize','readClear','readBtn',MAX_META,TYPES_META,
+    (f,err)=>{ hideErr('readErr'); document.getElementById('readResult').innerHTML=''; if(err) showErr('readErr',err); });
+const readBtn = document.getElementById('readBtn');
+readBtn.addEventListener('click', async () => {
+    const f=readZone.getFile(); if(!f) return;
+    hideErr('readErr'); document.getElementById('readResult').innerHTML='';
+    const orig=readBtn.innerHTML; setLoading(readBtn,true,orig);
+    try {
+        const fd=new FormData(); fd.append('image',f);
+        const res=await doPost('/read-metadata',fd);
+        const data=await res.json();
+        if(!data.success){ showErr('readErr',data.error||'Lỗi đọc metadata'); return; }
+        const rows=data.rows;
+        if(!rows||!rows.length){ document.getElementById('readResult').innerHTML='<div class="meta-empty">Không tìm thấy metadata.</div>'; return; }
+        let h='<table class="meta-table"><thead><tr><th>Trường</th><th>Giá trị</th></tr></thead><tbody>';
+        rows.forEach(([k,v])=>{ h+=`<tr><td class="key">${esc(k)}</td><td class="val">${esc(v)}</td></tr>`; });
+        h+='</tbody></table>';
+        document.getElementById('readResult').innerHTML=h;
+    } catch(e){ showErr('readErr',e.message); }
+    finally{ setLoading(readBtn,false,orig); }
+});
+
+const maxSizeRange = document.getElementById('maxSizeRange');
+const maxSizeLabel = document.getElementById('maxSizeLabel');
+maxSizeRange.addEventListener('input', () => { maxSizeLabel.textContent = maxSizeRange.value + ' MB'; });
+
+const compFmtBtns = document.querySelectorAll('#panel-compress .fmt-btn');
+let compFmt = 'image/png';
+compFmtBtns.forEach(b => { b.addEventListener('click', () => { compFmtBtns.forEach(x=>x.classList.remove('active')); b.classList.add('active'); compFmt=b.dataset.fmt; }); });
+
+const compZone = makeZone('compDrop','compInput','compInfo','compThumb','compName','compSize','compClear','compBtn',MAX_COMP,TYPES_COMP,
+    (f,err)=>{ hideErr('compErr'); hideOk('compOk'); document.getElementById('compStats').classList.remove('show'); if(err) showErr('compErr',err); });
+const compBtn = document.getElementById('compBtn');
+compBtn.addEventListener('click', async () => {
+    const f=compZone.getFile(); if(!f) return;
+    if(typeof imageCompression==='undefined'){ showErr('compErr','Thư viện nén chưa tải, thử lại sau.'); return; }
+    hideErr('compErr'); hideOk('compOk');
+    document.getElementById('compStats').classList.remove('show');
+    const orig=compBtn.innerHTML; setLoading(compBtn,true,orig);
+    try {
+        const maxMB=parseInt(maxSizeRange.value)||1;
+        const opts={ maxSizeMB:maxMB, fileType:compFmt, useWebWorker:true };
+        const out=await imageCompression(f, opts);
+        const ext=fmtExt(compFmt);
+        const base=f.name.replace(/\.[^.]+$/,'');
+        triggerDownload(out, base+'_compressed.'+ext);
+        const pct=((1-out.size/f.size)*100).toFixed(1);
+        const stats=document.getElementById('compStats');
+        stats.textContent=`${fmtSize(f.size)} → ${fmtSize(out.size)} (giảm ${pct}%)`;
+        stats.classList.add('show');
+        showOk('compOk','compOkMsg','Nén xong — file đang tải về.');
+    } catch(e){ showErr('compErr','Nén thất bại: '+e.message); }
+    finally{ setLoading(compBtn,false,orig); }
+});
+})();
+</script>
+</body>
+</html>
