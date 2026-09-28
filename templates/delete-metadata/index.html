@@ -38,7 +38,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-s
 .brand-icon img{width:36px;height:36px;border-radius:10px;object-fit:cover;display:block}
 .brand-text h1{font-size:1.15rem;font-weight:700;letter-spacing:-.03em;line-height:1}
 .brand-text p{font-size:.72rem;color:var(--muted);margin-top:3px}
-.version-tag{font-size:.65rem;font-weight:600;color:var(--tag-text);background:var(--tag-bg);border-radius:4px;padding:2px 6px;letter-spacing:.02em;margin-left:4px;vertical-align:middle}
+.version-tag{font-size:.65rem;font-weight:600;color:var(--tag-text);background:var(--tag-bg);border-radius:4px;padding:2px 6px;letter-spacing:.02em;margin-left:4px;vertical-align:middle}.beta-tag{font-size:.65rem;font-weight:700;color:#f97316;background:rgba(249,115,22,.12);border:1px solid rgba(249,115,22,.3);border-radius:4px;padding:2px 7px;letter-spacing:.04em;margin-left:4px;vertical-align:middle}
 .header-actions{display:flex;align-items:center;gap:8px}
 .btn-ghost{padding:7px 13px;background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--text2);font-size:.79rem;font-family:inherit;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;transition:border-color .15s,color .15s,background .15s;text-decoration:none}
 .btn-ghost:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-gl)}
@@ -93,6 +93,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-s
 .meta-table .key{color:var(--text2);font-weight:500;width:160px;min-width:120px}
 .meta-table .val{color:var(--text)}
 .meta-empty{text-align:center;color:var(--muted);padding:24px;font-size:.85rem}
+#readResult{max-height:320px;overflow-y:auto;border-radius:8px;margin-top:4px}
 footer{margin-top:24px;font-size:.73rem;color:var(--muted);text-align:center;width:100%;max-width:720px;line-height:1.7}
 footer a{color:var(--text2);text-decoration:none}
 footer a:hover{color:var(--accent)}
@@ -109,11 +110,15 @@ footer a:hover{color:var(--accent)}
     <a class="brand" href="/">
         <div class="brand-icon"><img src="/static/icons/logo.png" alt="Logo"></div>
         <div class="brand-text">
-            <h1>Công Cụ Ảnh <span class="version-tag">26.27.09.25</span></h1>
-            <p>Xóa metadata · Ký tên · Đọc metadata</p>
+            <h1>Công Cụ Ảnh <span class="beta-tag">Beta Version</span></h1>
+            <p>Xóa metadata · Ký tên · Đọc metadata &nbsp;·&nbsp; <span style="color:#f97316;font-weight:600">Bản thử nghiệm</span></p>
         </div>
     </a>
     <div class="header-actions">
+        <a class="btn-ghost" href="/vi/qrcode">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="3" y="15" width="6" height="6" rx="1"/><rect x="5" y="5" width="2" height="2" fill="currentColor"/><rect x="17" y="5" width="2" height="2" fill="currentColor"/><rect x="5" y="17" width="2" height="2" fill="currentColor"/><path d="M15 15h2v2h-2zM17 17h2v2h-2zM15 19h2v2h-2z"/></svg>
+            <span>Tạo mã QR</span>
+        </a>
         <a class="btn-ghost" href="https://github.com/Pixel0509/qrcode-public" target="_blank" rel="noopener">
             <img src="/static/icons/github.svg" alt="GitHub" style="width:14px;height:14px;flex-shrink:0">
             <span>Mã nguồn</span>
@@ -215,6 +220,7 @@ footer a:hover{color:var(--accent)}
 
 <footer>
     Dự án cá nhân &mdash; chỉ để test vui &nbsp;·&nbsp; Ảnh không được lưu lại trên server<br>
+    <span style="color:#f97316;font-size:.7rem;font-weight:600">⚠ Bản thử nghiệm — có thể còn lỗi</span><br>
     <a href="https://github.com/Pixel0509/qrcode-public" target="_blank" rel="noopener">Mã nguồn</a>
     <div class="footer-social">
         <span>Theo dõi</span>
