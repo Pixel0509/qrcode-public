@@ -218,11 +218,11 @@ body{padding:16px 12px 24px}
             <span id="langLabel">VI</span>
         </a>
         <a class="btn-ghost" href="/cong-cu-anh">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M9 12h6M9 16h4"/><rect x="9" y="7" width="6" height="3" rx="1"/></svg>
-            <span>Xóa Metadata</span>
+            <img src="/static/icons/img.png" alt="Công cụ ảnh" style="width:14px;height:14px;flex-shrink:0;object-fit:contain">
+            <span>Công cụ ảnh</span>
         </a>
         <a class="btn-ghost" href="https://github.com/Pixel0509/qrcode-public" target="_blank" rel="noopener">
-            <img src="/static/icons/github.svg" alt="GitHub" style="width:14px;height:14px;flex-shrink:0">
+            <img id="ghIcon" src="/static/icons/github.svg" alt="GitHub" style="width:14px;height:14px;flex-shrink:0">
             <span>Mã nguồn</span>
         </a>
         <button class="theme-btn" id="themeToggle" title="Chuyển giao diện">
@@ -500,10 +500,18 @@ const html = document.documentElement;
 const savedTheme = localStorage.getItem(LS_THEME);
 html.setAttribute('data-theme', savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
 
+
+function updateGhIcon(){
+    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const el = document.getElementById('ghIcon');
+    if(el) el.src = dark ? '/static/icons/github1.svg' : '/static/icons/github.svg';
+}
+updateGhIcon();
 document.getElementById('themeToggle').addEventListener('click', () => {
     const n = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', n);
     localStorage.setItem(LS_THEME, n);
+    updateGhIcon();
 });
 
 let selectedFile  = null;
