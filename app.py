@@ -199,9 +199,9 @@ def qrtext():
         return jsonify({"success": False, "error": "Lỗi tạo mã QR"})
 
 
-@app.route("/delete-metadata")
-def delete_metadata():
-    return render_template("delete-metadata/index.html")
+@app.route("/cong-cu-anh")
+def cong_cu_anh():
+    return render_template("cong-cu-anh/index.html")
 
 
 _IMG_MIME = {"JPEG": "image/jpeg", "PNG": "image/png", "WEBP": "image/webp",
@@ -237,13 +237,18 @@ def _img_response(img, fmt):
                     headers={"Content-Disposition": "attachment"})
 
 
+_MIME_TO_FMT = {"image/jpeg": "JPEG", "image/png": "PNG", "image/webp": "WEBP",
+                "image/tiff": "TIFF", "image/bmp": "BMP"}
+
+
 @app.route("/strip-metadata", methods=["POST"])
 def strip_metadata():
     try:
         img, _, err = _read_image_file(request.files.get("image"))
         if err:
             return jsonify({"error": err}), 400
-        fmt   = img.format or "JPEG"
+        out_mime = (request.form.get("out_format") or "").strip()
+        fmt = _MIME_TO_FMT.get(out_mime) or img.format or "JPEG"
         clean = Image.new(img.mode, img.size)
         clean.putdata(list(img.getdata()))
         return _img_response(clean, fmt)
@@ -257,9 +262,10 @@ def sign_image():
         img, _, err = _read_image_file(request.files.get("image"))
         if err:
             return jsonify({"error": err}), 400
-        artist = (request.form.get("artist") or "").strip()[:200]
-        desc   = (request.form.get("desc")   or "").strip()[:500]
-        fmt    = img.format or "JPEG"
+        artist   = (request.form.get("artist")     or "").strip()[:200]
+        desc     = (request.form.get("desc")       or "").strip()[:500]
+        out_mime = (request.form.get("out_format") or "").strip()
+        fmt      = _MIME_TO_FMT.get(out_mime) or img.format or "JPEG"
         buf    = io.BytesIO()
         if fmt == "JPEG":
             try:
