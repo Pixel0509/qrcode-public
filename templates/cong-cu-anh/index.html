@@ -307,7 +307,7 @@ html.setAttribute('data-theme', saved || (window.matchMedia('(prefers-color-sche
 function updateGhIcon(){
     const dark = html.getAttribute('data-theme') === 'dark';
     const el = document.getElementById('ghIcon');
-    if(el) el.src = dark ? '/static/icons/github1.svg' : '/static/icons/github.svg';
+    if(el) el.src = dark ? '/static/icons/github.png' : '/static/icons/github.svg';
 }
 updateGhIcon();
 document.getElementById('themeToggle').addEventListener('click', () => {
