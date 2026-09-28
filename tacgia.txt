@@ -1,7 +1,0 @@
-Code-AI.
-Ý tưởng-TheDai-Pixel0509.
-web: trangchu-ttd.vercel.app.
-
-Code do AI viết.
-Ảnh do bạn upload lên được lưu trên tài khoản của bạn.
-Bạn được toàn quyền chỉnh sửa mã nguồn khi tải xuống,nếu có bản tốt hơn do bạn tạo ra,hãy chia sẻ tôi url :) .
