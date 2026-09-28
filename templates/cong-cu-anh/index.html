@@ -134,7 +134,7 @@ footer a:hover{color:var(--accent)}
             <span>Tạo mã QR</span>
         </a>
         <a class="btn-ghost" href="https://github.com/Pixel0509/qrcode-public" target="_blank" rel="noopener">
-            <img src="/static/icons/github.svg" alt="GitHub" style="width:14px;height:14px;flex-shrink:0">
+            <img id="ghIcon" src="/static/icons/github.svg" alt="GitHub" style="width:14px;height:14px;flex-shrink:0">
             <span>Mã nguồn</span>
         </a>
         <button class="theme-btn" id="themeToggle" title="Chuyển giao diện">
@@ -266,6 +266,10 @@ footer a:hover{color:var(--accent)}
                 <label>Dung lượng tối đa: <span id="maxSizeLabel">1 MB</span></label>
                 <input type="range" id="maxSizeRange" min="1" max="10" value="1" step="1">
             </div>
+            <div class="field">
+                <label>Độ nén: <span id="qualityLabel">80%</span></label>
+                <input type="range" id="qualityRange" min="10" max="100" value="80" step="5">
+            </div>
             <div class="format-row">
                 <label>Lưu dạng:</label>
                 <button class="fmt-btn active" data-fmt="image/png" id="compFmtPng">PNG</button>
@@ -300,10 +304,17 @@ footer a:hover{color:var(--accent)}
 const html = document.documentElement;
 const saved = localStorage.getItem('qr_theme');
 html.setAttribute('data-theme', saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+function updateGhIcon(){
+    const dark = html.getAttribute('data-theme') === 'dark';
+    const el = document.getElementById('ghIcon');
+    if(el) el.src = dark ? '/static/icons/github1.svg' : '/static/icons/github.svg';
+}
+updateGhIcon();
 document.getElementById('themeToggle').addEventListener('click', () => {
     const t = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     html.setAttribute('data-theme', t);
     localStorage.setItem('qr_theme', t);
+    updateGhIcon();
 });
 
 document.querySelectorAll('.group-tab').forEach(btn => {
@@ -443,6 +454,9 @@ readBtn.addEventListener('click', async () => {
 const maxSizeRange = document.getElementById('maxSizeRange');
 const maxSizeLabel = document.getElementById('maxSizeLabel');
 maxSizeRange.addEventListener('input', () => { maxSizeLabel.textContent = maxSizeRange.value + ' MB'; });
+const qualityRange = document.getElementById('qualityRange');
+const qualityLabel = document.getElementById('qualityLabel');
+qualityRange.addEventListener('input', () => { qualityLabel.textContent = qualityRange.value + '%'; });
 
 const compFmtBtns = document.querySelectorAll('#panel-compress .fmt-btn');
 let compFmt = 'image/png';
@@ -459,7 +473,8 @@ compBtn.addEventListener('click', async () => {
     const orig=compBtn.innerHTML; setLoading(compBtn,true,orig);
     try {
         const maxMB=parseInt(maxSizeRange.value)||1;
-        const opts={ maxSizeMB:maxMB, fileType:compFmt, useWebWorker:true };
+        const quality=parseInt(qualityRange.value)/100;
+        const opts={ maxSizeMB:maxMB, initialQuality:quality, fileType:compFmt, useWebWorker:true };
         const out=await imageCompression(f, opts);
         const ext=fmtExt(compFmt);
         const base=f.name.replace(/\.[^.]+$/,'');
