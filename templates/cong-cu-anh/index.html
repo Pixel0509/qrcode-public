@@ -31,8 +31,8 @@
 --shadow-lg:0 16px 60px rgba(0,0,0,.6);
 --tag-bg:rgba(96,112,232,.1);--tag-text:#818cf8;
 }
-html{min-height:100%;height:auto}
-body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;min-height:100vh;height:auto;display:flex;flex-direction:column;align-items:center;padding:28px 20px 32px;transition:background .2s,color .2s;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:28px 20px 32px;transition:background .2s,color .2s}
 .page-header{width:100%;max-width:760px;display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit}
 .brand-icon{width:36px;height:36px;border-radius:10px;overflow:hidden;flex-shrink:0}
@@ -116,69 +116,38 @@ footer a:hover{color:var(--accent)}
 .social-link:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-gl)}
 .social-link img{width:14px;height:14px}
 @media(max-width:600px){
-    html{font-size:16px;min-height:100%;height:auto;overflow-y:auto}
-    body{padding:12px 10px 20px;align-items:stretch;overflow-x:hidden;overflow-y:auto;height:auto;min-height:100vh;display:flex;flex-direction:column}
-    .page-header{max-width:none;margin-bottom:14px;gap:10px;align-items:center}
-    .brand{gap:9px;min-width:0}
-    .brand-icon,.brand-icon img{width:34px;height:34px}
-    .brand-text{min-width:0}
-    .brand-text h1{font-size:.98rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .brand-text p{font-size:.64rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px}
-    .beta-tag{font-size:.56rem;padding:2px 5px;margin-left:2px}
-    .header-actions{gap:5px;flex-shrink:0}
-    .header-actions .btn-ghost{width:34px;height:34px;padding:0;justify-content:center;border-radius:9px}
-    .header-actions .btn-ghost span{display:none}
-    .theme-btn{width:34px;height:34px;flex-shrink:0}
-    .card{max-width:none;border-radius:14px;flex:0 0 auto}
-    .group-panel{min-width:0}
-    .panel{min-height:0}
-    .group-tabs{overflow:hidden}
-    .group-tab{min-width:0;padding:12px 6px;font-size:.72rem;gap:5px;white-space:nowrap}
-    .group-tab svg{width:14px;height:14px}
-    .sub-tabs{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-    .sub-tabs::-webkit-scrollbar{display:none}
-    .sub-tab{flex:1 0 33.333%;min-width:0;padding:10px 5px;font-size:.71rem;gap:4px;white-space:nowrap}
-    .sub-tab svg{width:12px;height:12px}
-    .panel{padding:13px 12px}
-    .drop-zone{min-height:148px;height:auto;padding:22px 12px;gap:8px;overflow:visible}
-    .drop-icon svg{width:29px;height:29px}
-    .drop-text{font-size:.82rem}
-    .drop-hint{font-size:.68rem;line-height:1.45;text-align:center}
-    .file-info{gap:9px;padding:9px 10px;margin-top:8px}
-    .file-thumb{width:42px;height:42px}
-    .file-name{font-size:.78rem}
-    .file-size{font-size:.68rem}
-    .field{margin-top:11px}
-    .field label{font-size:.76rem}
-    .field input[type=text]{padding:10px 11px;font-size:.82rem;min-height:40px}
-    .format-row{gap:6px;margin-top:11px;align-items:center}
-    .format-row label{width:100%;font-size:.76rem;margin-bottom:1px}
-    .fmt-btn{flex:1;min-width:0;padding:8px 6px;font-size:.72rem;border-radius:7px}
-    .btn-primary{min-height:44px;padding:11px 10px;margin-top:12px;font-size:.82rem;border-radius:9px}
-    .error-box,.success-box{font-size:.76rem;padding:9px 10px}
-    #readResult{max-height:340px;overflow:auto;-webkit-overflow-scrolling:touch}
-    .meta-table{font-size:.74rem;min-width:500px}
-    .meta-table th{font-size:.68rem;padding:7px 8px}
-    .meta-table td{padding:7px 8px}
-    .meta-table .key{width:130px;min-width:100px}
-    footer{max-width:none;margin-top:16px;font-size:.66rem;line-height:1.6;padding:0 4px}
-    .footer-social{gap:6px;margin-top:7px}
-    .social-link{padding:6px 10px;font-size:.72rem}
+body{padding:14px 10px 20px;font-size:15px}
+.card{max-width:100%}
+.panel{padding:12px}
+.group-tab,.sub-tab{font-size:.73rem;gap:4px;padding:8px 6px}
+.header-actions .btn-ghost span{display:none}
+.btn-ghost{padding:6px 10px;font-size:.72rem}
+.theme-btn{width:32px;height:32px}
+.field{margin-top:8px}
+.field label{font-size:.75rem;margin-bottom:3px}
+.field input,.field textarea{font-size:.85rem;padding:8px 10px}
+.drop-zone{padding:18px 12px;min-height:100px}
+.file-info{padding:8px 10px}
+.file-thumb{width:36px;height:36px}
+.format-row{margin-top:10px;gap:6px}
+.fmt-btn{padding:4px 10px;font-size:.72rem}
+.btn-primary{padding:9px;font-size:.8rem}
+.error-box,.success-box,.compress-info{font-size:.75rem;padding:8px 10px}
+.meta-table{font-size:.75rem}
+.meta-table th,.meta-table td{padding:5px 8px}
+footer{font-size:.68rem}
 }
 
 @media(max-width:380px){
-    body{padding-left:8px;padding-right:8px}
-    .brand-text p{display:none}
-    .brand-text h1{font-size:.9rem}
-    .group-tab{font-size:.67rem;padding-left:4px;padding-right:4px}
-    .sub-tab{font-size:.67rem}
-    .panel{padding:11px 10px}
-    .drop-zone{min-height:138px}
-    .fmt-btn{font-size:.68rem;padding:7px 4px}
-}
-
-@media(min-width:601px) and (max-width:760px){
-    body{padding-left:16px;padding-right:16px}
+body{padding:12px 8px 16px}
+.card{padding:10px}
+.panel{padding:10px}
+.group-tab,.sub-tab{font-size:.65rem;padding:6px 4px}
+.btn-ghost{padding:5px 8px;font-size:.65rem}
+.field label{font-size:.7rem}
+.drop-zone{padding:14px 10px;gap:8px}
+.btn-primary{padding:8px;font-size:.75rem}
+.format-row{flex-direction:column}
 }
 </style>
 </head>
@@ -198,7 +167,7 @@ footer a:hover{color:var(--accent)}
             <span>Tạo mã QR</span>
         </a>
         <a class="btn-ghost" href="https://github.com/Pixel0509/qrcode-public" target="_blank" rel="noopener">
-            <img id="ghIcon" src="/static/icons/github.svg" alt="GitHub" style="width:14px;height:14px;flex-shrink:0">
+            <img id="ghIcon" src="/static/icons/GitHub_Invertocat_Black.png" alt="GitHub" style="width:14px;height:14px;flex-shrink:0">
             <span>Mã nguồn</span>
         </a>
         <button class="theme-btn" id="themeToggle" title="Chuyển giao diện">
@@ -331,8 +300,8 @@ footer a:hover{color:var(--accent)}
                 <input type="range" id="maxSizeRange" min="1" max="10" value="1" step="1">
             </div>
             <div class="field">
-                <label>Độ nén: <span id="qualityLabel">80%</span></label>
-                <input type="range" id="qualityRange" min="10" max="100" value="80" step="5">
+                <label>Độ nén: <span id="qualityLabel">Cao (20%)</span></label>
+                <input type="range" id="qualityRange" min="10" max="100" value="20" step="5">
             </div>
             <div class="format-row">
                 <label>Lưu dạng:</label>
@@ -371,7 +340,7 @@ html.setAttribute('data-theme', saved || (window.matchMedia('(prefers-color-sche
 function updateGhIcon(){
     const dark = html.getAttribute('data-theme') === 'dark';
     const el = document.getElementById('ghIcon');
-    if(el) el.src = dark ? '/static/icons/github.png' : '/static/icons/github.svg';
+    if(el) el.src = dark ? '/static/icons/GitHub_Invertocat_White.png' : '/static/icons/GitHub_Invertocat_Black.png';
 }
 updateGhIcon();
 document.getElementById('themeToggle').addEventListener('click', () => {
@@ -520,7 +489,13 @@ const maxSizeLabel = document.getElementById('maxSizeLabel');
 maxSizeRange.addEventListener('input', () => { maxSizeLabel.textContent = maxSizeRange.value + ' MB'; });
 const qualityRange = document.getElementById('qualityRange');
 const qualityLabel = document.getElementById('qualityLabel');
-qualityRange.addEventListener('input', () => { qualityLabel.textContent = qualityRange.value + '%'; });
+function updateQualityLabel(){
+    const val = parseInt(qualityRange.value);
+    const level = val <= 30 ? 'Cực mạnh' : val <= 50 ? 'Mạnh' : val <= 75 ? 'Vừa' : 'Cao';
+    qualityLabel.textContent = level + ' (' + val + '%)';
+}
+updateQualityLabel();
+qualityRange.addEventListener('input', updateQualityLabel);
 
 const compFmtBtns = document.querySelectorAll('#panel-compress .fmt-btn');
 let compFmt = 'image/png';
@@ -537,7 +512,7 @@ compBtn.addEventListener('click', async () => {
     const orig=compBtn.innerHTML; setLoading(compBtn,true,orig);
     try {
         const maxMB=parseInt(maxSizeRange.value)||1;
-        const quality=parseInt(qualityRange.value)/100;
+        const quality=(100-parseInt(qualityRange.value))/100;
         const opts={ maxSizeMB:maxMB, initialQuality:quality, fileType:compFmt, useWebWorker:true };
         const out=await imageCompression(f, opts);
         const ext=fmtExt(compFmt);
