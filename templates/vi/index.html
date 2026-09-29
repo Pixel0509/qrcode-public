@@ -303,24 +303,24 @@ body{padding:16px 12px 24px}
         </div>
 
         <div id="panel-url" class="panel">
-            <div class="field"><label>Địa chỉ URL</label><input type="url" id="urlInput" placeholder="https://example.com" maxlength="2048"></div>
+            <div class="field"><label>Địa chỉ URL</label><input type="url" id="urlInput" placeholder="https://example.com" maxlength="2048"><div class="char-count" id="urlCount">0 / 2048</div></div>
             <button class="btn-primary" id="urlBtn" data-loading="Đang xử lý...">Tạo mã QR</button>
             <div class="error-box" id="urlError"></div>
         </div>
 
         <div id="panel-email" class="panel">
             <div class="field"><label>Địa chỉ email</label><input type="email" id="emailTo" placeholder="someone@example.com" maxlength="254"></div>
-            <div class="field"><label>Tiêu đề</label><input type="text" id="emailSubject" placeholder="Tiêu đề email" maxlength="998"></div>
-            <div class="field"><label>Nội dung</label><textarea id="emailBody" placeholder="Nội dung email..." maxlength="2000"></textarea></div>
+            <div class="field"><label>Tiêu đề</label><input type="text" id="emailSubject" placeholder="Tiêu đề email" maxlength="998"><div class="char-count" id="emailSubjectCount">0 / 998</div></div>
+            <div class="field"><label>Nội dung</label><textarea id="emailBody" placeholder="Nội dung email..." maxlength="2000"></textarea><div class="char-count" id="emailBodyCount">0 / 2000</div></div>
             <button class="btn-primary" id="emailBtn" data-loading="Đang xử lý...">Tạo mã QR</button>
             <div class="error-box" id="emailError"></div>
         </div>
 
         <div id="panel-wifi" class="panel">
-            <div class="field"><label>Tên mạng (SSID)</label><input type="text" id="wifiSsid" placeholder="Tên Wi-Fi" maxlength="32"></div>
+            <div class="field"><label>Tên mạng (SSID)</label><input type="text" id="wifiSsid" placeholder="Tên Wi-Fi" maxlength="32"><div class="char-count" id="wifiSsidCount">0 / 32</div></div>
             <div class="field"><label>Mật khẩu</label>
                 <div class="api-key-wrap">
-                    <input type="password" id="wifiPass" placeholder="Mật khẩu (để trống nếu không có)" maxlength="63" autocomplete="off">
+                    <input type="password" id="wifiPass" placeholder="Mật khẩu (để trống nếu không có)" maxlength="63" autocomplete="off"><div class="char-count" id="wifiPassCount">0 / 63</div>
                     <button class="toggle-vis" id="toggleWifiVis" type="button" aria-label="Hiện/ẩn mật khẩu">
                         <svg id="wifiEyeOpen" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                         <svg id="wifiEyeClosed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19M1 1l22 22"/></svg>
@@ -342,11 +342,11 @@ body{padding:16px 12px 24px}
         <div id="panel-event" class="panel">
             <div class="field">
                 <label>Tiêu đề sự kiện <span style="color:var(--error)">*</span></label>
-                <input type="text" id="evTitle" placeholder="Nhập tiêu đề sự kiện" maxlength="120">
+                <input type="text" id="evTitle" placeholder="Nhập tiêu đề sự kiện" maxlength="120"><div class="char-count" id="evTitleCount">0 / 120</div>
             </div>
             <div class="field">
                 <label>Địa điểm</label>
-                <input type="text" id="evLocation" placeholder="Nhập địa điểm sự kiện" maxlength="120">
+                <input type="text" id="evLocation" placeholder="Nhập địa điểm sự kiện" maxlength="120"><div class="char-count" id="evLocationCount">0 / 120</div>
             </div>
             <div class="row-2">
                 <div class="field"><label>Ngày bắt đầu</label><input type="date" id="evStart"></div>
@@ -354,7 +354,7 @@ body{padding:16px 12px 24px}
             </div>
             <div class="field">
                 <label>Mô tả</label>
-                <textarea id="evDesc" placeholder="Mô tả sự kiện..." style="min-height:62px" maxlength="1000"></textarea>
+                <textarea id="evDesc" placeholder="Mô tả sự kiện..." style="min-height:62px" maxlength="1000"></textarea><div class="char-count" id="evDescCount">0 / 1000</div>
             </div>
             <button class="btn-primary" id="eventBtn" data-loading="Đang xử lý...">Tạo mã QR</button>
             <div class="error-box" id="eventError"></div>
@@ -504,7 +504,7 @@ html.setAttribute('data-theme', savedTheme || (window.matchMedia('(prefers-color
 function updateGhIcon(){
     const dark = document.documentElement.getAttribute('data-theme') === 'dark';
     const el = document.getElementById('ghIcon');
-    if(el) el.src = dark ? '/static/icons/github.png' : '/static/icons/github.svg';
+    if(el) el.src = dark ? '/static/icons/github1.svg' : '/static/icons/github.svg';
 }
 updateGhIcon();
 document.getElementById('themeToggle').addEventListener('click', () => {
@@ -581,6 +581,70 @@ textInput.addEventListener('input', () => {
     const n = textInput.value.length;
     textCount.textContent = n + ' / ' + TEXT_MAX;
     textCount.classList.toggle('warn', n > TEXT_MAX * 0.85);
+});
+
+const urlInput = document.getElementById('urlInput');
+const urlCount = document.getElementById('urlCount');
+urlInput.addEventListener('input', () => {
+    const n = urlInput.value.length;
+    urlCount.textContent = n + ' / 2048';
+    urlCount.classList.toggle('warn', n > 2048 * 0.85);
+});
+
+const emailSubject = document.getElementById('emailSubject');
+const emailSubjectCount = document.getElementById('emailSubjectCount');
+emailSubject.addEventListener('input', () => {
+    const n = emailSubject.value.length;
+    emailSubjectCount.textContent = n + ' / 998';
+    emailSubjectCount.classList.toggle('warn', n > 998 * 0.85);
+});
+
+const emailBody = document.getElementById('emailBody');
+const emailBodyCount = document.getElementById('emailBodyCount');
+emailBody.addEventListener('input', () => {
+    const n = emailBody.value.length;
+    emailBodyCount.textContent = n + ' / 2000';
+    emailBodyCount.classList.toggle('warn', n > 2000 * 0.85);
+});
+
+const wifiSsid = document.getElementById('wifiSsid');
+const wifiSsidCount = document.getElementById('wifiSsidCount');
+wifiSsid.addEventListener('input', () => {
+    const n = wifiSsid.value.length;
+    wifiSsidCount.textContent = n + ' / 32';
+    wifiSsidCount.classList.toggle('warn', n > 32 * 0.85);
+});
+
+const wifiPass = document.getElementById('wifiPass');
+const wifiPassCount = document.getElementById('wifiPassCount');
+wifiPass.addEventListener('input', () => {
+    const n = wifiPass.value.length;
+    wifiPassCount.textContent = n + ' / 63';
+    wifiPassCount.classList.toggle('warn', n > 63 * 0.85);
+});
+
+const evTitle = document.getElementById('evTitle');
+const evTitleCount = document.getElementById('evTitleCount');
+evTitle.addEventListener('input', () => {
+    const n = evTitle.value.length;
+    evTitleCount.textContent = n + ' / 120';
+    evTitleCount.classList.toggle('warn', n > 120 * 0.85);
+});
+
+const evLocation = document.getElementById('evLocation');
+const evLocationCount = document.getElementById('evLocationCount');
+evLocation.addEventListener('input', () => {
+    const n = evLocation.value.length;
+    evLocationCount.textContent = n + ' / 120';
+    evLocationCount.classList.toggle('warn', n > 120 * 0.85);
+});
+
+const evDesc = document.getElementById('evDesc');
+const evDescCount = document.getElementById('evDescCount');
+evDesc.addEventListener('input', () => {
+    const n = evDesc.value.length;
+    evDescCount.textContent = n + ' / 1000';
+    evDescCount.classList.toggle('warn', n > 1000 * 0.85);
 });
 
 let timerImg = null;
