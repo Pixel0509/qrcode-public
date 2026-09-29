@@ -9,6 +9,7 @@
 <link rel="shortcut icon" href="/favicon.ico">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.js"></script>
 <script>if(typeof jsQR==='undefined'){var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js';document.head.appendChild(s);}</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -40,6 +41,17 @@
 --badge-bg:rgba(96,112,232,.14);--badge-text:#818cf8;
 --tag-bg:rgba(96,112,232,.1);--tag-text:#818cf8;
 --scan-tab:#2dd4a0;--scan-tab-bg:rgba(45,212,160,.1);--scan-tab-border:rgba(45,212,160,.25)}
+.hero-banner{width:100vw;margin-left:calc(-50vw + 50%);background:linear-gradient(135deg,#7ec8e3 0%,#a8d8ea 40%,#b8e0f7 100%);border-radius:0;padding:28px 32px;text-align:center;margin-bottom:24px}
+.hero-banner h2{font-size:2rem;font-weight:800;font-style:italic;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.18);letter-spacing:-.02em;line-height:1.1}
+.hero-banner p{font-size:.9rem;color:rgba(255,255,255,.9);margin-top:8px;font-weight:500}
+.color-row{display:flex;align-items:center;gap:10px;margin-top:12px;flex-wrap:wrap;width:100%}
+.color-row label{font-size:.8rem;font-weight:600;color:var(--text2);white-space:nowrap}
+.color-picker-wrap{display:flex;align-items:center;gap:6px;flex:1;min-width:80px}
+.color-picker-wrap span{font-size:.78rem;color:var(--text2)}
+input[type=color]{flex:1;height:32px;min-width:0;border:1px solid var(--border2);border-radius:6px;cursor:pointer;padding:2px;background:var(--surface)}
+input[type=color]{width:32px;height:32px;border:1px solid var(--border2);border-radius:6px;cursor:pointer;padding:2px;background:var(--surface)}
+.bg-transparent-btn{padding:5px 10px;border:1px solid var(--border2);border-radius:6px;background:transparent;color:var(--text2);font-size:.75rem;font-family:inherit;cursor:pointer;transition:all .15s}
+.bg-transparent-btn.active{border-color:var(--accent);color:var(--accent);background:var(--accent-gl)}
 html,body{height:100%}
 body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:28px 20px 32px;transition:background .2s,color .2s}
 .page-header{width:100%;max-width:1080px;display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
@@ -152,8 +164,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-s
 footer{margin-top:24px;font-size:.73rem;color:var(--muted);text-align:center;width:100%;max-width:1080px;line-height:1.7}
 footer a{color:var(--text2);text-decoration:none;cursor:pointer}
 footer a:hover{color:var(--accent)}
-.footer-social{margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:8px}
-.footer-social span{font-size:.72rem;color:var(--muted);font-weight:500;letter-spacing:.03em}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:8px}
 .social-link{display:inline-flex;align-items:center;gap:7px;padding:7px 14px;border:1px solid var(--border2);border-radius:9px;color:var(--text2);text-decoration:none;font-size:.79rem;font-weight:500;transition:border-color .15s,color .15s,background .15s}
 .social-link:hover{border-color:#69C9D0;color:var(--text);background:rgba(105,201,208,.07)}
 .social-link img{width:18px;height:18px;object-fit:contain;border-radius:3px}
@@ -246,7 +257,7 @@ body{padding:12px 8px 16px;font-size:14px}
             <img src="/static/icons/logo.png" alt="Logo">
         </div>
         <div class="brand-text">
-            <h1>QR Generator <span class="version-tag">26.27.09.25</span></h1>
+            <h1>QR Generator <span class="version-tag">26.29.09.30</span></h1>
             <p>Ảnh · Văn bản · URL · Email · Wi-Fi · Sự kiện</p>
         </div>
     </a>
@@ -270,6 +281,10 @@ body{padding:12px 8px 16px;font-size:14px}
     </div>
 </div>
 
+<div class="hero-banner">
+    <h2>QR Generator</h2>
+    <p>Ảnh &bull; Văn bản &bull; URL &bull; Email &bull; Wi-Fi &bull; Sự kiện</p>
+</div>
 <div class="layout">
     <div class="card">
         <div class="tabs-row">
@@ -336,13 +351,25 @@ body{padding:12px 8px 16px;font-size:14px}
                 <textarea id="textInput" placeholder="Nhập nội dung cần mã hóa..." maxlength="4096"></textarea>
                 <div class="char-count" id="textCount">0 / 4096</div>
             </div>
-            <button class="btn-primary" id="textBtn" data-loading="Đang xử lý...">Tạo mã QR</button>
+            <div class="color-row">
+                <label>Màu QR:</label>
+                <div class="color-picker-wrap"><span>Nền</span><input type="color" id="qrBgColor" value="#ffffff"></div>
+                <div class="color-picker-wrap"><span>Chấm</span><input type="color" id="qrDotColor" value="#000000"></div>
+                <button class="bg-transparent-btn" id="qrBgTransparent">Nền trong suốt</button>
+            </div>
+            <button class="btn-primary" id="textBtn" data-loading="Đang tạo QR...">Tạo mã QR</button>
             <div class="error-box" id="textError"></div>
         </div>
 
         <div id="panel-url" class="panel">
             <div class="field"><label>Địa chỉ URL</label><input type="url" id="urlInput" placeholder="https://example.com" maxlength="2048"><div class="char-count" id="urlCount">0 / 2048</div></div>
-            <button class="btn-primary" id="urlBtn" data-loading="Đang xử lý...">Tạo mã QR</button>
+            <div class="color-row">
+                <label>Màu QR:</label>
+                <div class="color-picker-wrap"><span>Nền</span><input type="color" id="urlQrBgColor" value="#ffffff"></div>
+                <div class="color-picker-wrap"><span>Chấm</span><input type="color" id="urlQrDotColor" value="#000000"></div>
+                <button class="bg-transparent-btn" id="urlQrBgTransparent">Nền trong suốt</button>
+            </div>
+            <button class="btn-primary" id="urlBtn" data-loading="Đang tạo QR...">Tạo mã QR</button>
             <div class="error-box" id="urlError"></div>
         </div>
 
@@ -479,6 +506,7 @@ body{padding:12px 8px 16px;font-size:14px}
             <img class="full-img" id="fullImg" src="" alt="">
             <div class="qr-overlay" id="qrOverlay"><img id="qrOverlayImg" src="" alt="QR"></div>
             <div class="imgbb-bar" id="imgbbBar"><a id="imgbbLink" href="" target="_blank" rel="noopener noreferrer"></a></div>
+            <div id="qrStylingContainer" style="position:absolute;left:-9999px;top:-9999px;width:300px;height:300px"></div>
             <div class="qr-center" id="qrCenter">
                 <img id="qrCenterImg" src="" alt="QR">
                 <div class="qr-meta" id="qrMeta"></div>
@@ -488,13 +516,13 @@ body{padding:12px 8px 16px;font-size:14px}
 </div>
 
 <footer>
-    Dự án cá nhân &mdash; chỉ để test vui &nbsp;·&nbsp; Ảnh lưu trên tài khoản ImgBB của bạn<br>
-    <a href="https://github.com/Pixel0509/qrcode-public" target="_blank" rel="noopener">Tải mã nguồn</a>
-    <div class="footer-social">
-        <span>Theo dõi</span>
+    Dự án cá nhân &mdash; chỉ để test vui &nbsp;·&nbsp; Ảnh lưu trên tài khoản ImgBB của bạn
+    <div class="footer-bottom">
         <a class="social-link" href="https://tiktok.com/@ttd5t9" target="_blank" rel="noopener noreferrer">
-            <img src="/static/icons/tiktok.svg" alt="TikTok">
-            TikTok
+            <img src="/static/icons/tiktok.svg" alt="TikTok">TikTok
+        </a>
+        <a class="social-link" href="https://github.com/Pixel0509/qrcode-public" target="_blank" rel="noopener">
+            <img id="ghIcon" src="/static/icons/GitHub_Invertocat_Black.png" alt="GitHub" style="width:16px;height:16px">Mã nguồn
         </a>
     </div>
 </footer>
@@ -620,6 +648,60 @@ textInput.addEventListener('input', () => {
     textCount.textContent = n + ' / ' + TEXT_MAX;
     textCount.classList.toggle('warn', n > TEXT_MAX * 0.85);
 });
+
+let qrBgTransparent = false;
+let urlQrBgTransparent = false;
+
+document.getElementById('qrBgTransparent').addEventListener('click', function(){
+    qrBgTransparent = !qrBgTransparent;
+    this.classList.toggle('active', qrBgTransparent);
+    document.getElementById('qrBgColor').disabled = qrBgTransparent;
+});
+document.getElementById('urlQrBgTransparent').addEventListener('click', function(){
+    urlQrBgTransparent = !urlQrBgTransparent;
+    this.classList.toggle('active', urlQrBgTransparent);
+    document.getElementById('urlQrBgColor').disabled = urlQrBgTransparent;
+});
+
+function genQrStyled(text, dotColor, bgColor, bgTrans, errId, btn) {
+    const errEl = document.getElementById(errId);
+    if (!text) { showErr(errEl, 'Vui lòng điền đầy đủ các trường bắt buộc'); return; }
+    if (typeof QRCodeStyling === 'undefined') {
+        genQrText(text, errEl, btn, '');
+        return;
+    }
+    hideErr(errEl);
+    disableDl();
+    qrCenter.classList.remove('show');
+    setLoading(btn, true, 'Tạo mã QR');
+    try {
+        const container = document.getElementById('qrStylingContainer');
+        container.innerHTML = '';
+        const qr = new QRCodeStyling({
+            width: 300, height: 300, type: 'canvas',
+            data: text,
+            dotsOptions: { color: dotColor, type: 'rounded' },
+            backgroundOptions: { color: bgTrans ? 'transparent' : bgColor },
+            cornersSquareOptions: { type: 'extra-rounded', color: dotColor },
+            cornersDotOptions: { color: dotColor },
+            qrOptions: { errorCorrectionLevel: 'M' }
+        });
+        qr.append(container);
+        setTimeout(() => {
+            const canvas = container.querySelector('canvas');
+            if (!canvas) { genQrText(text, errEl, btn, ''); return; }
+            const b64 = canvas.toDataURL('image/png').split(',')[1];
+            qrCenterImg.src = 'data:image/png;base64,' + b64;
+            qrMeta.textContent = '';
+            qrCenter.classList.add('show', 'anim-pop');
+            prevPlaceholder.style.display = 'none';
+            enableDl(b64);
+            setLoading(btn, false, 'Tạo mã QR');
+        }, 200);
+    } catch(e) {
+        genQrText(text, errEl, btn, '');
+    }
+}
 
 const urlInput = document.getElementById('urlInput');
 const urlCount = document.getElementById('urlCount');
@@ -975,27 +1057,22 @@ function setupTextTab(btnEl, errId, getValue, getMeta) {
     });
 }
 
-setupTextTab(textBtn, 'textError',
-    () => {
-        const v = textInput.value.trim();
-        if (v.length > TEXT_MAX) { showErr(document.getElementById('textError'), 'Nội dung quá dài (tối đa ' + TEXT_MAX + ' ký tự)'); return ''; }
-        return v;
-    },
-    () => {
-        const t = textInput.value.trim();
-        return t.length > 40 ? t.slice(0, 40) + '\u2026' : t;
+document.getElementById('textBtn').addEventListener('click', () => {
+    const v = textInput.value.trim();
+    if (!v || v.length > TEXT_MAX) {
+        if (v.length > TEXT_MAX) showErr(document.getElementById('textError'), 'Nội dung quá dài (tối đa ' + TEXT_MAX + ' ký tự)');
+        else showErr(document.getElementById('textError'), 'Vui lòng nhập nội dung');
+        return;
     }
-);
+    genQrStyled(v, document.getElementById('qrDotColor').value, document.getElementById('qrBgColor').value, qrBgTransparent, 'textError', document.getElementById('textBtn'));
+});
 
-setupTextTab(urlBtn, 'urlError',
-    () => {
-        const v = document.getElementById('urlInput').value.trim();
-        if (!v) return '';
-        if (!/^https?:\/\//i.test(v)) { showErr(document.getElementById('urlError'), 'URL phải bắt đầu bằng http:// hoặc https://'); return ''; }
-        return v;
-    },
-    () => document.getElementById('urlInput').value.trim()
-);
+document.getElementById('urlBtn').addEventListener('click', () => {
+    const v = document.getElementById('urlInput').value.trim();
+    if (!v) { showErr(document.getElementById('urlError'), 'Vui lòng nhập URL'); return; }
+    if (!/^https?:\/\//i.test(v)) { showErr(document.getElementById('urlError'), 'URL phải bắt đầu bằng http:// hoặc https://'); return; }
+    genQrStyled(v, document.getElementById('urlQrDotColor').value, document.getElementById('urlQrBgColor').value, urlQrBgTransparent, 'urlError', document.getElementById('urlBtn'));
+});
 
 setupTextTab(emailBtn, 'emailError', () => {
     const to = document.getElementById('emailTo').value.trim();
