@@ -504,7 +504,7 @@ html.setAttribute('data-theme', savedTheme || (window.matchMedia('(prefers-color
 function updateGhIcon(){
     const dark = document.documentElement.getAttribute('data-theme') === 'dark';
     const el = document.getElementById('ghIcon');
-    if(el) el.src = dark ? '/static/icons/github.png' : '/static/icons/github.svg';
+    if(el) el.src = dark ? '/static/icons/github1.svg' : '/static/icons/github.svg';
 }
 updateGhIcon();
 document.getElementById('themeToggle').addEventListener('click', () => {
@@ -581,6 +581,70 @@ textInput.addEventListener('input', () => {
     const n = textInput.value.length;
     textCount.textContent = n + ' / ' + TEXT_MAX;
     textCount.classList.toggle('warn', n > TEXT_MAX * 0.85);
+});
+
+const urlInput = document.getElementById('urlInput');
+const urlCount = document.getElementById('urlCount');
+urlInput.addEventListener('input', () => {
+    const n = urlInput.value.length;
+    urlCount.textContent = n + ' / 2048';
+    urlCount.classList.toggle('warn', n > 2048 * 0.85);
+});
+
+const emailSubject = document.getElementById('emailSubject');
+const emailSubjectCount = document.getElementById('emailSubjectCount');
+emailSubject.addEventListener('input', () => {
+    const n = emailSubject.value.length;
+    emailSubjectCount.textContent = n + ' / 998';
+    emailSubjectCount.classList.toggle('warn', n > 998 * 0.85);
+});
+
+const emailBody = document.getElementById('emailBody');
+const emailBodyCount = document.getElementById('emailBodyCount');
+emailBody.addEventListener('input', () => {
+    const n = emailBody.value.length;
+    emailBodyCount.textContent = n + ' / 2000';
+    emailBodyCount.classList.toggle('warn', n > 2000 * 0.85);
+});
+
+const wifiSsid = document.getElementById('wifiSsid');
+const wifiSsidCount = document.getElementById('wifiSsidCount');
+wifiSsid.addEventListener('input', () => {
+    const n = wifiSsid.value.length;
+    wifiSsidCount.textContent = n + ' / 32';
+    wifiSsidCount.classList.toggle('warn', n > 32 * 0.85);
+});
+
+const wifiPass = document.getElementById('wifiPass');
+const wifiPassCount = document.getElementById('wifiPassCount');
+wifiPass.addEventListener('input', () => {
+    const n = wifiPass.value.length;
+    wifiPassCount.textContent = n + ' / 63';
+    wifiPassCount.classList.toggle('warn', n > 63 * 0.85);
+});
+
+const evTitle = document.getElementById('evTitle');
+const evTitleCount = document.getElementById('evTitleCount');
+evTitle.addEventListener('input', () => {
+    const n = evTitle.value.length;
+    evTitleCount.textContent = n + ' / 120';
+    evTitleCount.classList.toggle('warn', n > 120 * 0.85);
+});
+
+const evLocation = document.getElementById('evLocation');
+const evLocationCount = document.getElementById('evLocationCount');
+evLocation.addEventListener('input', () => {
+    const n = evLocation.value.length;
+    evLocationCount.textContent = n + ' / 120';
+    evLocationCount.classList.toggle('warn', n > 120 * 0.85);
+});
+
+const evDesc = document.getElementById('evDesc');
+const evDescCount = document.getElementById('evDescCount');
+evDesc.addEventListener('input', () => {
+    const n = evDesc.value.length;
+    evDescCount.textContent = n + ' / 1000';
+    evDescCount.classList.toggle('warn', n > 1000 * 0.85);
 });
 
 let timerImg = null;
