@@ -192,13 +192,51 @@ footer a:hover{color:var(--accent)}
 .scan-result-text a{color:var(--accent);font-weight:700;font-style:italic;text-decoration:none}
 .scan-result-text a:hover{text-decoration:underline}
 @media(max-width:480px){
-body{padding:16px 12px 24px}
-.card{padding:16px 13px}
+body{padding:14px 10px 20px;font-size:15px}
+.card{padding:14px 11px}
+.btn-ghost{padding:6px 10px;font-size:.75rem}
+.btn-ghost span{display:none}
+.theme-btn{width:32px;height:32px}
+.page-header{gap:8px;margin-bottom:18px}
+.brand-text h1{font-size:1rem}
+.brand-text p{font-size:.65rem}
+.tabs{grid-template-columns:repeat(3,1fr)}
+.tab{padding:8px 6px;font-size:.72rem;gap:4px}
+.field{margin-top:10px}
+.field label{font-size:.75rem;margin-bottom:4px}
+.field input,.field textarea,.field select{font-size:.85rem;padding:8px 10px}
 .row-2{grid-template-columns:1fr}
 .row-3{grid-template-columns:1fr 1fr}
-.btn-ghost span{display:none}
-.tabs{grid-template-columns:repeat(3,1fr)}.btn-scan-tab{min-width:44px;padding:5px 7px}}
-@media(max-width:360px){.btn-scan-tab .new-badge{right:-6px}}
+.btn-primary{padding:10px;font-size:.8rem;gap:6px}
+.error-box,.success-box{font-size:.75rem;padding:8px 11px}
+.char-count{font-size:.65rem;margin-top:2px}
+.btn-dl{font-size:.75rem;padding:8px 10px;min-width:48px}
+.dl-label{font-size:.7rem}
+.download-row{gap:6px}
+.btn-scan-tab{min-width:42px;padding:4px 6px;font-size:.68rem}
+.preview-pane{min-height:180px}
+.prev-right{min-height:160px;font-size:.8rem}
+.cd-section{margin-top:0}
+.scan-paste-area{min-height:90px;padding:12px;font-size:.75rem}
+.scan-result{margin-top:10px;padding:10px}
+textarea{min-height:80px}
+.api-key-wrap{gap:4px}
+.toggle-vis{width:30px;height:30px}}
+
+@media(max-width:360px){
+body{padding:12px 8px 16px;font-size:14px}
+.card{padding:12px 9px}
+.btn-ghost{padding:5px 8px;font-size:.7rem}
+.page-header{flex-direction:column;align-items:flex-start;gap:8px}
+.brand-text h1{font-size:.95rem}
+.btn-scan-tab .new-badge{right:-6px}
+.tabs{grid-template-columns:repeat(2,1fr);gap:6px}
+.tab{padding:6px 4px;font-size:.65rem}
+.row-3{grid-template-columns:1fr}
+.btn-primary{padding:9px;font-size:.75rem}
+.char-count{font-size:.6rem}
+.btn-dl{font-size:.7rem;padding:7px 8px}
+}
 </style>
 </head>
 <body>
@@ -222,7 +260,7 @@ body{padding:16px 12px 24px}
             <span>Image Tools</span>
         </a>
         <a class="btn-ghost" href="https://github.com/Pixel0509/qrcode-public" target="_blank" rel="noopener">
-            <img id="ghIcon" src="/static/icons/github.svg" alt="GitHub" style="width:14px;height:14px;flex-shrink:0">
+            <img id="ghIcon" src="/static/icons/GitHub_Invertocat_Black.png" alt="GitHub" style="width:14px;height:14px;flex-shrink:0">
             <span>Source</span>
         </a>
         <button class="theme-btn" id="themeToggle" title="Toggle theme">
@@ -504,7 +542,7 @@ html.setAttribute('data-theme', savedTheme || (window.matchMedia('(prefers-color
 function updateGhIcon(){
     const dark = document.documentElement.getAttribute('data-theme') === 'dark';
     const el = document.getElementById('ghIcon');
-    if(el) el.src = dark ? '/static/icons/github1.svg' : '/static/icons/github.svg';
+    if(el) el.src = dark ? '/static/icons/GitHub_Invertocat_White.png' : '/static/icons/GitHub_Invertocat_Black.png';
 }
 updateGhIcon();
 document.getElementById('themeToggle').addEventListener('click', () => {
