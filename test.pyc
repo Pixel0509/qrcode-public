@@ -1,9 +1,0 @@
-import time
-
-def check_ngao():
-    print("Đang quét não bộ của mày...")
-    time.sleep(1.5)
-    print("Kết quả: Bình thường, nhưng thích đòi hỏi :))")
-
-if __name__ == "__main__":
-    check_ngao()
