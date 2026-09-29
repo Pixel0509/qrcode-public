@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Công Cụ Ảnh - Miễn Phí</title>
-<link rel="icon" type="image/png" sizes="512x512" href="https://pixel064.vercel.app/static/favicon/favicon.png">
-<link rel="apple-touch-icon" sizes="512x512" href="https://pixel064.vercel.app/static/favicon/favicon.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/static/favicon/favicon.png">
+<link rel="apple-touch-icon" sizes="512x512" href="/static/favicon/favicon.png">
 <link rel="shortcut icon" href="/favicon.ico">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
@@ -31,6 +31,9 @@
 --shadow-lg:0 16px 60px rgba(0,0,0,.6);
 --tag-bg:rgba(96,112,232,.1);--tag-text:#818cf8;
 }
+.hero-banner{width:100vw;margin-left:calc(-50vw + 50%);background:linear-gradient(135deg,#7ec8e3 0%,#a8d8ea 40%,#b8e0f7 100%);border-radius:0;padding:26px 28px;text-align:center;margin-bottom:22px}
+.hero-banner h2{font-size:1.8rem;font-weight:800;font-style:italic;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.18);letter-spacing:-.02em;line-height:1.1}
+.hero-banner p{font-size:.85rem;color:rgba(255,255,255,.9);margin-top:7px;font-weight:500}
 html,body{height:100%}
 body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:28px 20px 32px;transition:background .2s,color .2s}
 .page-header{width:100%;max-width:760px;display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
@@ -48,15 +51,15 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-s
 .theme-btn svg{width:15px;height:15px}
 .icon-sun{display:none}.icon-moon{display:block}
 [data-theme="dark"] .icon-sun{display:block}[data-theme="dark"] .icon-moon{display:none}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-lg);width:100%;max-width:760px;transition:background .2s,border-color .2s;overflow:hidden}
-.group-tabs{display:flex;border-bottom:2px solid var(--border);background:var(--bg2)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-lg);width:100%;max-width:760px;transition:background .2s,border-color .2s}
+.group-tabs{display:flex;border-bottom:2px solid var(--border);background:var(--bg2);overflow:visible}
 .group-tab{flex:1;padding:13px 8px;background:transparent;border:none;font-family:inherit;font-size:.85rem;font-weight:600;color:var(--text2);cursor:pointer;transition:color .15s,background .15s;display:flex;align-items:center;justify-content:center;gap:7px}
 .group-tab:hover{color:var(--text);background:var(--accent-gl)}
 .group-tab.active{color:var(--accent);background:var(--surface);border-bottom:2px solid var(--accent);margin-bottom:-2px}
 .group-tab svg{width:15px;height:15px;flex-shrink:0}
 .group-panel{display:none}
 .group-panel.active{display:block}
-.sub-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg)}
+.sub-tabs{display:flex;border-bottom:1px solid var(--border);background:var(--bg);overflow:visible}
 .sub-tab{flex:1;padding:10px 8px;background:transparent;border:none;font-family:inherit;font-size:.78rem;font-weight:500;color:var(--muted);cursor:pointer;transition:color .15s,background .15s;display:flex;align-items:center;justify-content:center;gap:5px}
 .sub-tab:hover{color:var(--text2)}
 .sub-tab.active{color:var(--accent);border-bottom:2px solid var(--accent);margin-bottom:-1px;background:var(--surface)}
@@ -111,7 +114,7 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',system-ui,sans-s
 footer{margin-top:24px;font-size:.73rem;color:var(--muted);text-align:center;width:100%;max-width:760px;line-height:1.7}
 footer a{color:var(--text2);text-decoration:none}
 footer a:hover{color:var(--accent)}
-.footer-social{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px}
+.footer-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:8px}
 .social-link{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border:1px solid var(--border2);border-radius:8px;color:var(--text2);text-decoration:none;font-size:.79rem;font-weight:500;transition:border-color .15s,color .15s,background .15s}
 .social-link:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-gl)}
 .social-link img{width:14px;height:14px}
@@ -177,6 +180,10 @@ body{padding:12px 8px 16px}
     </div>
 </div>
 
+<div class="hero-banner">
+    <h2>Công cụ ảnh</h2>
+    <p>Sửa metadata &bull; Nén ảnh</p>
+</div>
 <div class="card">
     <div class="group-tabs">
         <button class="group-tab active" data-group="meta">
@@ -321,13 +328,14 @@ body{padding:12px 8px 16px}
 </div>
 
 <footer>
-    Dự án cá nhân &mdash; chỉ để test vui &nbsp;·&nbsp; Ảnh không được lưu lại trên server<br>
-    <span style="color:#f97316;font-size:.7rem;font-weight:600">⚠ Bản thử nghiệm — có thể còn lỗi</span><br>
-    <a href="https://github.com/Pixel0509/qrcode-public" target="_blank" rel="noopener">Mã nguồn</a>
-    <div class="footer-social">
-        <span>Theo dõi</span>
+    Dự án cá nhân &mdash; chỉ để test vui &nbsp;·&nbsp; Ảnh không được lưu trên server<br>
+    <span style="color:#f97316;font-size:.7rem;font-weight:600">⚠ Bản thử nghiệm — có thể còn lỗi</span>
+    <div class="footer-bottom">
         <a class="social-link" href="https://tiktok.com/@ttd5t9" target="_blank" rel="noopener noreferrer">
             <img src="/static/icons/tiktok.svg" alt="TikTok">TikTok
+        </a>
+        <a class="social-link" href="https://github.com/Pixel0509/qrcode-public" target="_blank" rel="noopener">
+            <img id="ghIcon" src="/static/icons/GitHub_Invertocat_Black.png" alt="GitHub" style="width:14px;height:14px">Mã nguồn
         </a>
     </div>
 </footer>
