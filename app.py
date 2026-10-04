@@ -1,9 +1,6 @@
 import base64
-import hashlib
-import hmac
 import io
 import os
-import time
 
 from flask import Flask, render_template, request, jsonify, send_from_directory, redirect
 from PIL import Image
@@ -13,50 +10,10 @@ import requests
 app = Flask(__name__)
 
 IMGBB_API_KEY = os.environ.get("IMGBB_API_KEY", "")
-_SECRET = os.environ.get("QR_SECRET", "dev-secret-change-me").encode()
-
-_LIMITS = {"img": 120, "text": 30}
 
 _MAX_IMG_BYTES = 3 * 1024 * 1024
 _MAX_TEXT_LEN  = 4096
 _MAX_KEY_LEN   = 128
-
-
-def _make_token(kind: str, ts: float) -> str:
-    msg = f"{kind}:{ts:.0f}".encode()
-    sig = hmac.new(_SECRET, msg, hashlib.sha256).hexdigest()
-    return f"{kind}:{ts:.0f}:{sig}"
-
-
-def _verify_token(kind: str, token: str) -> tuple[bool, float]:
-    try:
-        parts = token.split(":")
-        if len(parts) != 3:
-            return False, 0.0
-        k, ts_str, sig = parts
-        if k != kind:
-            return False, 0.0
-        ts = float(ts_str)
-        msg = f"{kind}:{ts:.0f}".encode()
-        expected = hmac.new(_SECRET, msg, hashlib.sha256).hexdigest()
-        if not hmac.compare_digest(expected, sig):
-            return False, 0.0
-        return True, ts
-    except Exception:
-        return False, 0.0
-
-
-def _check_rate(kind: str, client_token: str) -> tuple[bool, int, str]:
-    limit = _LIMITS[kind]
-    now = time.time()
-    if client_token:
-        valid, ts = _verify_token(kind, client_token)
-        if valid:
-            elapsed = now - ts
-            if elapsed < limit:
-                return True, int(limit - elapsed) + 1, ""
-    new_token = _make_token(kind, now)
-    return False, limit, new_token
 
 
 def _safe_ip(req) -> str:
@@ -116,11 +73,6 @@ def qrcode_en():
 
 @app.route("/upload", methods=["POST"])
 def upload():
-    client_token = (request.form.get("cd_token") or "")[:256]
-    blocked, rem, new_token = _check_rate("img", client_token)
-    if blocked:
-        return jsonify({"success": False, "error": f"Vui lòng chờ {rem} giây", "cooldown": rem}), 429
-
     file = request.files.get("image")
     if not file or not file.filename:
         return jsonify({"success": False, "error": "Chưa chọn file ảnh"})
@@ -159,8 +111,6 @@ def upload():
                 "success": True,
                 "qr_code": _make_qr(image_url),
                 "image_url": image_url,
-                "cd_token": new_token,
-                "cd_rem": _LIMITS["img"],
             })
 
         msg = (result.get("error") or {}).get("message", "Không rõ nguyên nhân")
@@ -177,11 +127,6 @@ def upload():
 @app.route("/qrtext", methods=["POST"])
 def qrtext():
     data = request.get_json(force=True, silent=True) or {}
-    client_token = str(data.get("cd_token") or "")[:256]
-    blocked, rem, new_token = _check_rate("text", client_token)
-    if blocked:
-        return jsonify({"success": False, "error": f"Vui lòng chờ {rem} giây", "cooldown": rem}), 429
-
     text = str(data.get("text") or "").strip()
     if not text:
         return jsonify({"success": False, "error": "Nội dung không được để trống"})
@@ -192,8 +137,6 @@ def qrtext():
         return jsonify({
             "success": True,
             "qr_code": _make_qr(text),
-            "cd_token": new_token,
-            "cd_rem": _LIMITS["text"],
         })
     except Exception:
         return jsonify({"success": False, "error": "Lỗi tạo mã QR"})
